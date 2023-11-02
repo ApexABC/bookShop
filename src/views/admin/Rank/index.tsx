@@ -5,9 +5,9 @@ interface IProps {
   children?: ReactNode
 }
 
-const Book: FC<IProps> = (props) => {
-  return <div>book</div>
+const Rank: FC<IProps> = (props) => {
+  return <div>Rank</div>
 }
 
-Book.displayName = 'Book'
-export default memo(Book)
+Rank.displayName = 'Rank'
+export default memo(Rank)

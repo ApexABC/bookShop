@@ -1,6 +1,7 @@
 import React, { memo, Suspense } from 'react'
 import type { FC, ReactNode } from 'react'
 import { Outlet } from 'react-router-dom'
+import AppHeader from '@/components/AppHeader'
 interface IProps {
   children?: ReactNode
 }
@@ -8,7 +9,7 @@ interface IProps {
 const Shop: FC<IProps> = (props) => {
   return (
     <div>
-      Shop
+      <AppHeader></AppHeader>
       <Suspense fallback="">
         <Outlet></Outlet>
       </Suspense>
