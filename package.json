@@ -13,6 +13,7 @@
     "@ant-design/icons": "^5.2.6",
     "@reduxjs/toolkit": "^1.9.7",
     "antd": "^5.10.3",
+    "axios": "^1.6.0",
     "less": "^4.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
