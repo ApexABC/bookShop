@@ -1,9 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { useSelector, TypedUseSelectorHook, useDispatch, shallowEqual } from 'react-redux'
 import homeReducer from './modules/home'
+import adminBook from './modules/adminBook'
 const store = configureStore({
   reducer: {
-    home: homeReducer
+    home: homeReducer,
+
+    adminBook
   }
 })
 

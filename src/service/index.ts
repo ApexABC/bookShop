@@ -5,10 +5,16 @@ class ZQRequest {
   constructor(BaseUrl: string, TimeOut: number) {
     this.instance = axios.create({
       baseURL: BaseUrl,
-      timeout: TimeOut
+      timeout: TimeOut,
+      headers: {
+        Authorization: localStorage.getItem('token') || ''
+      }
     })
     this.instance.interceptors.request.use(
       (config) => {
+        if (config.data) {
+          config.headers['Content-Type'] = 'multipart/form-data'
+        }
         return config
       },
       (error) => {
@@ -54,4 +60,5 @@ class ZQRequest {
   }
 }
 
-export default ZQRequest
+const baseURL = import.meta.env.VITE_BASE_URL
+export default new ZQRequest(baseURL, 2000)

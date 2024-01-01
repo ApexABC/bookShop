@@ -2,8 +2,8 @@ import { styled } from 'styled-components'
 export const AdminWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
-  height: 100%;
+  width: 98vw;
+  height: 100vh;
   border: 1px solid #000;
   border-top: 0;
   .page-header {
@@ -27,6 +27,7 @@ export const AdminWrapper = styled.div`
   }
   .page-content {
     display: flex;
+    height: 100%;
     .aside {
       height: 100%;
     }
@@ -40,6 +41,7 @@ export const AdminWrapper = styled.div`
       .content {
         flex: 1;
         padding: 10px;
+        height: 100%;
         /* height: calc(100vh - 100px); */
         background-color: #f6f6f6;
       }

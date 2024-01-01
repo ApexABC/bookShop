@@ -18,7 +18,7 @@ const Admin: FC<IProps> = (props) => {
           <AsideMenu />
         </div>
         <div className="right">
-          <div className="header"></div>
+          {/* <div className="header"></div> */}
           <div className="content">
             <Suspense fallback="loading...">
               <Outlet></Outlet>
