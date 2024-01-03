@@ -1,4 +1,4 @@
-import { styled } from 'styled-components'
+import styled from 'styled-components'
 export const AdminWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -6,11 +6,11 @@ export const AdminWrapper = styled.div`
   height: 100vh;
   border: 1px solid #000;
   border-top: 0;
+  overflow: hidden;
   .page-header {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 50px;
     background-color: var(--sceondColor);
     /* background: linear-gradient(45deg, #43cbff, #9708cc);
     animation: hueRotate 10s infinite; */
@@ -19,6 +19,8 @@ export const AdminWrapper = styled.div`
     p {
       font-weight: bold;
       color: #000;
+      height: 40px;
+      line-height: 40px;
       /* color: transparent;
       background: linear-gradient(45deg, #fdd819, #e80505); */
       /* -webkit-background-clip: text; */
@@ -46,6 +48,12 @@ export const AdminWrapper = styled.div`
         background-color: #f6f6f6;
       }
     }
+  }
+  .ant-pro-table-search {
+    display: none;
+  }
+  .ant-pro-table-list-toolbar {
+    display: none;
   }
   /* @keyframes hueRotate {
     100% {

@@ -119,7 +119,7 @@ const Book: FC<IProps> = (props) => {
           columns={columns}
           dataSource={curBook?.bookList}
           rowKey={(item) => item.id}
-          scroll={{ y: '67vh' }}
+          // scroll={{ y: '67vh' }}
           pagination={{
             total: curBook?.count,
             showTotal: (total) => `共 ${total} 条`,

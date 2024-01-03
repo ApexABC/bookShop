@@ -8,6 +8,7 @@ const ShopCar = lazy(() => import('@/views/shop/ShopCar'))
 const Admin = lazy(() => import('@/views/admin'))
 const Book = lazy(() => import('@/views/admin/Book'))
 const Rank = lazy(() => import('@/views/admin/Rank'))
+const Sort = lazy(() => import('@/views/admin/Sort'))
 const routes: RouteObject[] = [
   {
     path: '/',
@@ -26,8 +27,10 @@ const routes: RouteObject[] = [
     element: <Admin />,
     children: [
       { path: '/admin', element: <Navigate to={'/admin/book'} /> },
+      { path: '/admin/order', element: <Sort /> },
       { path: '/admin/book', element: <Book /> },
-      { path: '/admin/rank', element: <Rank /> }
+      { path: '/admin/rank', element: <Rank /> },
+      { path: '/admin/sort', element: <Sort /> }
     ]
   }
 ]

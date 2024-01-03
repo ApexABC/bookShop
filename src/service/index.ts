@@ -7,12 +7,16 @@ class ZQRequest {
       baseURL: BaseUrl,
       timeout: TimeOut,
       headers: {
-        Authorization: localStorage.getItem('token') || ''
+        Authorization: localStorage.getItem('token') || '',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
       }
     })
     this.instance.interceptors.request.use(
       (config) => {
-        if (config.data) {
+        if (typeof config.data === 'string') {
+          config.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8'
+        }
+        if (typeof config.data === 'object') {
           config.headers['Content-Type'] = 'multipart/form-data'
         }
         return config

@@ -2,6 +2,7 @@ import React, { memo } from 'react'
 import type { FC, ReactNode } from 'react'
 import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
+import Svg from '@/components/Svg'
 import type { MenuProps } from 'antd'
 import { Menu } from 'antd'
 import { AsideMenuWrapper } from './style'
@@ -27,21 +28,14 @@ function getItem(
 }
 
 const items: MenuProps['items'] = [
-  getItem('订单管理', '/order', <MailOutlined />),
-  getItem('书籍管理', '/book', <MailOutlined />),
-
-  getItem('榜单管理', '/rank', <AppstoreOutlined />),
-  getItem('分类管理', '/sort', <MailOutlined />),
+  getItem('订单管理', '/order', <Svg name="订单" />),
+  getItem('书籍管理', '/book', <Svg name="书吧" />),
+  getItem('榜单管理', '/rank', <Svg name="榜单" />),
+  getItem('分类管理', '/sort', <Svg name="分类" />),
   //   { type: 'divider' },
   getItem('排行榜', 'sub6', <AppstoreOutlined />, [
     getItem('热门榜', '/hot'),
     getItem('新书榜', '14')
-  ]),
-  getItem('Navigation Three', 'sub4', <SettingOutlined />, [
-    getItem('Option 9', '9'),
-    getItem('Option 10', '10'),
-    getItem('Option 11', '11'),
-    getItem('Option 12', '12')
   ])
 ]
 

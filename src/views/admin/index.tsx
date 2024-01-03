@@ -13,11 +13,11 @@ const Admin: FC<IProps> = (props) => {
       <div className="page-header">
         <p>图书商城后台系统</p>
       </div>
-      <div className="page-content">
+      <div className="page-content pb-4">
         <div className="aside">
           <AsideMenu />
         </div>
-        <div className="right">
+        <div className="right w-full h-full overflow-scroll">
           {/* <div className="header"></div> */}
           <div className="content">
             <Suspense fallback="loading...">
