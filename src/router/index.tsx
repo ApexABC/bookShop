@@ -3,6 +3,7 @@ import { Navigate } from 'react-router-dom'
 import type { RouteObject } from 'react-router-dom'
 const Shop = lazy(() => import('@/views/shop'))
 const Home = lazy(() => import('@/views/shop/Home'))
+const BookList = lazy(() => import('@/views/shop/BookList'))
 const ShopCar = lazy(() => import('@/views/shop/ShopCar'))
 
 const Admin = lazy(() => import('@/views/admin'))
@@ -19,7 +20,8 @@ const routes: RouteObject[] = [
     element: <Shop />,
     children: [
       { path: '/shop', element: <Navigate to={'/shop/home'} /> },
-      { path: '/shop/home', element: <Home /> }
+      { path: '/shop/home', element: <Home /> },
+      { path: '/shop/bookList', element: <BookList /> }
     ]
   },
   {

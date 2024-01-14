@@ -1,47 +1,53 @@
 import styled from 'styled-components'
-export const AppHeaderWrapper = styled.div`
+interface IProps {
+  $isScrollAtTop: boolean
+}
+export const AppHeaderWrapper = styled.div<IProps>`
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  transition: all 0.8s;
+  background-color: ${(props) => (props.$isScrollAtTop ? 'transparent' : '#fff')};
+  /* border: 1px solid #fff;
+  box-sizing: border-box; */
   width: 100%;
-  .header {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    height: 80px;
-    background-color: var(--primaryColor);
-    border-bottom: 1px solid var(--blue);
-    color: #fff;
-    a {
-      color: #fff;
-    }
-    .header-left {
-      width: 200px;
-      margin-left: 20px;
-      font-size: 38px;
-      font-weight: 700;
-      color: transparent;
-      background: linear-gradient(45deg, #fdd819, #e80505);
-      -webkit-background-clip: text;
-      animation: hueRotate 5s infinite;
-      user-select: none;
-      cursor: pointer;
-      @keyframes hueRotate {
-        100% {
-          filter: hue-rotate(360deg);
-        }
-      }
-    }
-    .header-center {
-      flex: 1;
-    }
-    .header-right {
-      display: flex;
-      justify-content: flex-end;
-      padding-right: 30px;
-      width: 200px;
-    }
+  .hambur-enter,
+  .hanmbur-appear {
+    height: 0;
+    opacity: 0;
   }
-  .header-down {
-    display: flex;
-    justify-content: center;
-    width: 100%;
+  .hambur-enter-active,
+  .hambur-appear-active {
+    height: 208px;
+    opacity: 1;
+    transition: all 300ms;
+  }
+  .hambur-exit {
+    height: 208px;
+    opacity: 1;
+  }
+  .hambur-exit-active {
+    height: 0;
+    opacity: 0;
+    transition: all 300ms;
+  }
+  .hambur-exit-done {
+    display: none;
+  }
+  .ham-ul {
+    width: 95%;
+    margin: 0 10px;
+    & > li {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      width: 100%;
+      height: 40px;
+      border-bottom: 1px solid #fff;
+      padding-left: 10px;
+      /* margin: 0 10px; */
+      /* margin-right: 20px; */
+    }
   }
 `

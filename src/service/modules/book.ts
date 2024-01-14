@@ -25,3 +25,9 @@ export const searchBook = (like: string, limit?: 1000, offset?: 0) =>
       offset
     }
   })
+
+export const searchRandomBook = (limit = 10) =>
+  request.get({ url: '/books/random', params: { limit } })
+
+export const searchBookListBySortId = (sortId: any) =>
+  request.get({ url: '/sort/searchBookListBySortId', params: { sortId } })

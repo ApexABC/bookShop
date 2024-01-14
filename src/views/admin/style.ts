@@ -2,7 +2,7 @@ import styled from 'styled-components'
 export const AdminWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 98vw;
+  width: 100%;
   height: 100vh;
   border: 1px solid #000;
   border-top: 0;
@@ -29,9 +29,11 @@ export const AdminWrapper = styled.div`
   }
   .page-content {
     display: flex;
+    width: 100%;
     height: 100%;
     .aside {
       height: 100%;
+      background-color: #fff;
     }
     .right {
       display: flex;
@@ -43,7 +45,10 @@ export const AdminWrapper = styled.div`
       .content {
         flex: 1;
         padding: 10px;
+        width: 100%;
         height: 100%;
+        overflow-y: scroll;
+        padding-bottom: 25px;
         /* height: calc(100vh - 100px); */
         background-color: #f6f6f6;
       }

@@ -1,8 +1,6 @@
 import React, { memo, useEffect, useState, useRef } from 'react'
 import type { FC, ReactNode } from 'react'
-// import { useAppSelector, useAppDispatch, shallowEqualApp } from '@/store'
 import { BookWrapper } from './style'
-// import { fetchAdminBookAction } from '@/store/modules/adminBook'
 import { Table, Image, Button, Popconfirm, message, Input } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import type { IBookData } from '@/type'
@@ -10,20 +8,13 @@ import EditBookDialog from './c-cpns/EditBookDialog'
 import { deleteBook } from '@/service/modules/book'
 import AddBookDialog from './c-cpns/addBookDialog'
 import { searchBook, reqBookList } from '@/service/modules/book'
+import BindSortDialog from './c-cpns/bindSortDialog'
 interface IProps {
   children?: ReactNode
 }
 const { Search } = Input
 const Book: FC<IProps> = (props) => {
-  // const dispatch = useAppDispatch()
-  // const { bookInfo } = useAppSelector(
-  //   (state) => ({
-  //     bookInfo: state.adminBook.bookInfo
-  //   }),
-  //   shallowEqualApp
-  // )
   useEffect(() => {
-    // await dispatch(fetchAdminBookAction({ limit: 1000, offset: 0 }))
     reloadBookList()
   }, [])
   const columns: ColumnsType<IBookData> = [
@@ -52,6 +43,9 @@ const Book: FC<IProps> = (props) => {
             <Button type="link" onClick={() => handleEditBtn(text, record)}>
               编辑
             </Button>
+            <Button type="link" onClick={() => handleBindSort(text, record)}>
+              绑定书籍类型
+            </Button>
             <Popconfirm
               title="删除书籍"
               description={`确认要删除${record.name}？`}
@@ -72,8 +66,6 @@ const Book: FC<IProps> = (props) => {
   // 查找书籍
   async function handleSearchBtn(info: any) {
     const { data } = await searchBook(info)
-    console.log(data)
-
     setCurbook(data)
   }
   // 编辑书籍弹窗
@@ -85,6 +77,11 @@ const Book: FC<IProps> = (props) => {
   const addDialogRef = useRef<{ openModal: () => void } | null>(null)
   function handleAddBtn() {
     addDialogRef.current?.openModal()
+  }
+  // 绑定书籍类型
+  const bindSortDialogRef = useRef<{ openModal: (info: any) => void } | null>(null)
+  function handleBindSort(text: any, record: any) {
+    bindSortDialogRef.current?.openModal(record)
   }
   async function handleDeleteBtn(_: any, record: any) {
     try {
@@ -119,18 +116,17 @@ const Book: FC<IProps> = (props) => {
           columns={columns}
           dataSource={curBook?.bookList}
           rowKey={(item) => item.id}
-          // scroll={{ y: '67vh' }}
           pagination={{
             total: curBook?.count,
             showTotal: (total) => `共 ${total} 条`,
             defaultPageSize: 10,
             defaultCurrent: 1
           }}
-          // style={{ height: 500 }}
         ></Table>
       </div>
       <EditBookDialog ref={editDialogRef} reloadBookList={reloadBookList} />
       <AddBookDialog ref={addDialogRef} reloadBookList={reloadBookList} />
+      <BindSortDialog ref={bindSortDialogRef}></BindSortDialog>
     </BookWrapper>
   )
 }

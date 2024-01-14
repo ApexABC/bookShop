@@ -6,6 +6,7 @@ class ZQRequest {
     this.instance = axios.create({
       baseURL: BaseUrl,
       timeout: TimeOut,
+      validateStatus: (status) => status >= 200 && status < 500,
       headers: {
         Authorization: localStorage.getItem('token') || '',
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -22,7 +23,7 @@ class ZQRequest {
         return config
       },
       (error) => {
-        return error
+        return Promise.reject(error)
       }
     )
     this.instance.interceptors.response.use(
@@ -30,7 +31,7 @@ class ZQRequest {
         return res.data
       },
       (err) => {
-        return err
+        return Promise.reject(err)
       }
     )
   }
