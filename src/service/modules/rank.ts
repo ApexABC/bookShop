@@ -12,3 +12,6 @@ export const reqAddRank = (name: string) =>
 
 export const reqUpdateRank = (info: any) =>
   request.patch({ url: `/rank/${info.id}`, data: qs.stringify(info) })
+
+export const reqRankBookListById = (id: number) =>
+  request.get({ url: `/rank/searchBookRankListById/${id}` })

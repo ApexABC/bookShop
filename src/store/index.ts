@@ -3,8 +3,10 @@ import { useSelector, TypedUseSelectorHook, useDispatch, shallowEqual } from 're
 import homeReducer from './modules/home'
 import adminBook from './modules/adminBook'
 import rank from './modules/rank'
+import user from './modules/user'
 const store = configureStore({
   reducer: {
+    user,
     home: homeReducer,
 
     adminBook,

@@ -16,6 +16,11 @@ const columns: any[] = [
     width: 60,
     className: 'drag-visible'
   },
+  {
+    title: '排名',
+    render: (_: any, __: any, index: any) => `${index + 1}`,
+    width: 60
+  },
   { title: '书籍名称', dataIndex: 'name', key: 'name', width: 100 },
   { title: '作者', dataIndex: 'author', key: 'author', width: 100 },
   {

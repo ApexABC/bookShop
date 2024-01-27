@@ -12,8 +12,6 @@ export const AdminWrapper = styled.div`
     align-items: center;
     justify-content: center;
     background-color: var(--sceondColor);
-    /* background: linear-gradient(45deg, #43cbff, #9708cc);
-    animation: hueRotate 10s infinite; */
     font-size: 28px;
     border: 1px solid #000;
     p {
@@ -21,10 +19,6 @@ export const AdminWrapper = styled.div`
       color: #000;
       height: 40px;
       line-height: 40px;
-      /* color: transparent;
-      background: linear-gradient(45deg, #fdd819, #e80505); */
-      /* -webkit-background-clip: text; */
-      /* animation: hueRotate 5s infinite; */
     }
   }
   .page-content {

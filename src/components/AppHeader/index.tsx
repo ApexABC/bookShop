@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState } from 'react'
 import type { FC, ReactNode } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { AppHeaderWrapper } from './style'
 import { Avatar, Dropdown } from 'antd'
 import type { MenuProps } from 'antd'
@@ -8,21 +8,32 @@ import classNames from 'classnames'
 import { CSSTransition } from 'react-transition-group'
 import Logo from '../logo'
 import Svg from '../Svg'
+import { verfiTokenIsPass } from '@/utils/verifyToken'
+import { shallowEqualApp, useAppDispatch, useAppSelector } from '@/store'
+import { setUserInfo } from '@/store/modules/user'
 interface IProps {
   children?: ReactNode
 }
-const items: MenuProps['items'] = [
-  {
-    key: '1',
-    label: <NavLink to={'/admin'}>退出登录</NavLink>
-  },
-  {
-    key: '2',
-    label: <NavLink to={'/admin'}>后台管理</NavLink>
-  }
-]
 
 const AppHeader: FC<IProps> = (props) => {
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+  const { userInfoStore } = useAppSelector(
+    (state) => ({
+      userInfoStore: state.user.userInfo
+    }),
+    shallowEqualApp
+  )
+  const [curItems, setCurItems] = useState<MenuProps['items']>([
+    {
+      key: '1',
+      label: <span onClick={handleLoginOut}>退出登录</span>
+    },
+    {
+      key: '2',
+      label: <NavLink to={'/admin'}>后台管理</NavLink>
+    }
+  ])
   useEffect(() => {
     window.addEventListener('scroll', (e) => {
       if (window.scrollY !== 0) {
@@ -31,7 +42,33 @@ const AppHeader: FC<IProps> = (props) => {
         setIsScrollAtTop(true)
       }
     })
+    testToken()
+    if (userInfoStore.type !== 'root') {
+      // 判断是否为超管显示下拉菜单内容
+      curItems?.pop()
+      setCurItems(curItems)
+    }
+    return () => {
+      window.removeEventListener('scroll', (e) => {
+        if (window.scrollY !== 0) {
+          setIsScrollAtTop(false)
+        } else {
+          setIsScrollAtTop(true)
+        }
+      })
+    }
   }, [])
+  function handleLoginOut() {
+    localStorage.removeItem('token')
+    navigate('/login')
+  }
+  const [userInfo, setuserInfo] = useState<false | Record<any, any>>(false)
+  async function testToken() {
+    const result = await verfiTokenIsPass()
+    if (!result) return setuserInfo(false)
+    setuserInfo(result)
+    dispatch(setUserInfo(result))
+  }
   const [isScrollAtTop, setIsScrollAtTop] = useState(true)
   const [isHamburOpen, setIsHamburOpen] = useState(false)
   const hamburBtn = classNames('sm:hidden', 'w-11', 'flex', 'justify-center', 'box-border', {
@@ -52,15 +89,25 @@ const AppHeader: FC<IProps> = (props) => {
         </div>
         <div className="hidden sm:flex">
           <input
-            className="w-20 h-6 pl-3 rounded-3xl border-white outline-none md:w-52  xl:mr-20"
+            className="w-20 h-8 pl-3 rounded-3xl border-violet-300 outline-none md:w-52  xl:mr-20"
             placeholder="搜索书籍"
             type="text"
           />
         </div>
         <div className="flex-1 flex justify-end mr-5 w-14 sm:flex-none">
-          <Dropdown menu={{ items }} trigger={['click', 'hover']} placement="bottomLeft">
-            <Avatar size="large" />
-          </Dropdown>
+          {userInfo ? (
+            <Dropdown
+              menu={{ items: curItems }}
+              trigger={['click', 'hover']}
+              placement="bottomLeft"
+            >
+              <Avatar size="large" src={userInfo.avatar} />
+            </Dropdown>
+          ) : (
+            <span className="text-[#1e4aed] cursor-pointer" onClick={(e) => navigate('/login')}>
+              <span className="text-black">请</span>登录
+            </span>
+          )}
         </div>
         <div className={hamburBtn} onClick={(e) => setIsHamburOpen(!isHamburOpen)}>
           {isHamburOpen ? <Svg name="关闭" size={40}></Svg> : <Svg name="汉堡菜单" size={40}></Svg>}

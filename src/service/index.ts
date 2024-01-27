@@ -14,6 +14,7 @@ class ZQRequest {
     })
     this.instance.interceptors.request.use(
       (config) => {
+        config.headers.Authorization = localStorage.getItem('token') || ''
         if (typeof config.data === 'string') {
           config.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8'
         }

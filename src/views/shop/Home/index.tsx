@@ -14,6 +14,7 @@ interface IProps {
 
 const Home: FC<IProps> = (props) => {
   useEffect(() => {
+    window.scrollTo(0, 0)
     getList()
   }, [])
   const [sortList, setSortList] = useState<any[]>()

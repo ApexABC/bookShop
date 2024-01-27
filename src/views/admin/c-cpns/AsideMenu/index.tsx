@@ -1,6 +1,6 @@
 import React, { memo } from 'react'
 import type { FC, ReactNode } from 'react'
-import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons'
+import { AppstoreOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import Svg from '@/components/Svg'
 import type { MenuProps } from 'antd'
@@ -50,8 +50,8 @@ const AsideMenu: FC<IProps> = (props) => {
       <Menu
         onClick={onClick}
         style={{ width: 256 }}
-        defaultSelectedKeys={['1']}
-        defaultOpenKeys={['sub1']}
+        defaultSelectedKeys={['/book']}
+        // defaultOpenKeys={['sub1']}
         mode="inline"
         items={items}
       />
