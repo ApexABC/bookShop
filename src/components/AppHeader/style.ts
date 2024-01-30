@@ -9,6 +9,11 @@ export const AppHeaderWrapper = styled.div<IProps>`
   z-index: 2;
   transition: all 0.8s;
   background-color: ${(props) => (props.$isScrollAtTop ? 'transparent' : '#fff')};
+  box-shadow: ${(props) =>
+    props.$isScrollAtTop
+      ? ''
+      : `0 4px 6px -1px rgb(0 0 0 / 0.1),
+      0 2px 4px -2px rgb(0 0 0 / 0.1)`};
   /* border: 1px solid #fff;
   box-sizing: border-box; */
   width: 100%;

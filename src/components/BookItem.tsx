@@ -2,6 +2,7 @@ import { Rate } from 'antd'
 import React, { memo } from 'react'
 import type { FC, ReactNode } from 'react'
 import Svg from './Svg'
+import { useNavigate } from 'react-router-dom'
 
 interface IProps {
   children?: ReactNode
@@ -9,8 +10,12 @@ interface IProps {
 }
 
 const BookItem: FC<IProps> = ({ itemData }) => {
+  const navigate = useNavigate()
   return (
-    <div className="flex flex-col cursor-pointer h-96 bg-white">
+    <div
+      className="flex flex-col cursor-pointer h-96 bg-white"
+      onClick={(e) => navigate('/shop/bookDetail', { state: { curBookId: itemData.id } })}
+    >
       <div className="flex items-center justify-center bg-[#f5f8fc] h-64">
         <img className="w-40 h-56" src={itemData.album} />
       </div>

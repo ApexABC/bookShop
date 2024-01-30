@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState } from 'react'
 import type { FC, ReactNode } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { reqRankBookListById } from '@/service/modules/rank'
 import Svg from '@/components/Svg'
 interface IProps {
@@ -9,6 +9,7 @@ interface IProps {
 
 const RankList: FC<IProps> = (props) => {
   const location = useLocation()
+  const navigate = useNavigate()
   const { title, rankId } = location.state
   const [rankBookList, setRankBookList] = useState<any[]>()
   useEffect(() => {
@@ -31,6 +32,7 @@ const RankList: FC<IProps> = (props) => {
       <div className="grid gap-1 lg:grid-cols-2 px-2">
         {rankBookList?.map((item, index) => (
           <div
+            onClick={(e) => navigate('/shop/bookDetail', { state: { curBookId: item.id } })}
             key={item.id}
             className="flex p-2 bg-white bg-opacity-50 border border-white border-solid"
           >

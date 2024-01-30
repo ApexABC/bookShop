@@ -27,10 +27,14 @@ const AppHeader: FC<IProps> = (props) => {
   const [curItems, setCurItems] = useState<MenuProps['items']>([
     {
       key: '1',
-      label: <span onClick={handleLoginOut}>退出登录</span>
+      label: <span>Hi! {userInfoStore.username}</span>
     },
     {
       key: '2',
+      label: <span onClick={handleLoginOut}>退出登录</span>
+    },
+    {
+      key: '3',
       label: <NavLink to={'/admin'}>后台管理</NavLink>
     }
   ])
@@ -77,7 +81,7 @@ const AppHeader: FC<IProps> = (props) => {
   })
   return (
     <AppHeaderWrapper $isScrollAtTop={isScrollAtTop}>
-      <div className="flex justify-start items-center min-h-20 sm:justify-between">
+      <div className="flex justify-start items-center min-h-20 sm:justify-between ">
         <Logo></Logo>
         <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-start">
           <ul className="flex justify-between ml-6 sm:w-3/4 lg:w-1/2 xl:w-1/3 ">

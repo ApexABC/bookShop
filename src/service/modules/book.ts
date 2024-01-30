@@ -1,3 +1,4 @@
+import queryString from 'query-string'
 import request from '../index'
 
 export const reqBookList = (limit?: number, offset?: number) =>
@@ -31,3 +32,27 @@ export const searchRandomBook = (limit = 10) =>
 
 export const searchBookListBySortId = (sortId: any) =>
   request.get({ url: '/sort/searchBookListBySortId', params: { sortId } })
+
+export const searchBookDetailById = (id: number) =>
+  request.get({ url: '/books/detail', params: { id } })
+
+export const reqBookCommentListById = (id: number) =>
+  request.get({ url: '/books/comment', params: { bookId: id } })
+
+export const reqAddBookComment = (info: any) =>
+  request.post({
+    url: '/books/comment',
+    data: queryString.stringify(info)
+  })
+
+export const reqDeleteBookComment = (info: any) =>
+  request.delete({
+    url: '/books/comment/delete',
+    data: queryString.stringify(info)
+  })
+
+export const reqBookCommentLike = (info: any) =>
+  request.post({
+    url: '/books/comment/like',
+    data: queryString.stringify(info)
+  })

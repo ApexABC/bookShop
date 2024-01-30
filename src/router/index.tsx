@@ -6,6 +6,7 @@ const Home = lazy(() => import('@/views/shop/Home'))
 const BookList = lazy(() => import('@/views/shop/BookList'))
 const RankList = lazy(() => import('@/views/shop/RankList'))
 const Login = lazy(() => import('@/views/shop/Login'))
+const BookDetail = lazy(() => import('@/views/shop/BookDetail'))
 const ShopCar = lazy(() => import('@/views/shop/ShopCar'))
 
 const Admin = lazy(() => import('@/views/admin'))
@@ -24,7 +25,8 @@ const routes: RouteObject[] = [
       { path: '/shop', element: <Navigate to={'/shop/home'} /> },
       { path: '/shop/home', element: <Home /> },
       { path: '/shop/bookList', element: <BookList /> },
-      { path: '/shop/rankList', element: <RankList /> }
+      { path: '/shop/rankList', element: <RankList /> },
+      { path: '/shop/bookDetail', element: <BookDetail /> }
     ]
   },
   {
