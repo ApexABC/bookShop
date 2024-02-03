@@ -4,13 +4,15 @@ import homeReducer from './modules/home'
 import adminBook from './modules/adminBook'
 import rank from './modules/rank'
 import user from './modules/user'
+import order from './modules/order'
 const store = configureStore({
   reducer: {
     user,
     home: homeReducer,
 
     adminBook,
-    rank
+    rank,
+    order
   }
 })
 

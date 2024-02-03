@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { reqVerifyToken } from '@/service/modules/user'
 import { useAppDispatch } from '@/store'
-import { setUserInfo } from '@/store/modules/user'
+import { setCurPathName, setUserInfo } from '@/store/modules/user'
 const allowNoTokenPath = [
   '/shop',
   '/shop/home',
@@ -13,8 +13,10 @@ const allowNoTokenPath = [
 const AuthRoute = (props?: any) => {
   const token = localStorage.getItem('token')
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
   useEffect(() => {
-    console.log(location.pathname)
+    dispatch(setCurPathName(location.pathname))
+    // console.log(location.pathname)
     if (allowNoTokenPath.includes(location.pathname)) return
     testToken()
   }, [location.pathname])
@@ -25,7 +27,6 @@ const AuthRoute = (props?: any) => {
   useEffect(() => {
     getUserInfo()
   }, [])
-  const dispatch = useAppDispatch()
   async function getUserInfo() {
     const { userInfo } = await reqVerifyToken()
     dispatch(setUserInfo(userInfo))

@@ -13,7 +13,7 @@ const RankList: FC<IProps> = (props) => {
   const { title, rankId } = location.state
   const [rankBookList, setRankBookList] = useState<any[]>()
   useEffect(() => {
-    window.scrollTo(0, 0)
+    // window.scrollTo(0, 0)
     getRankBookList()
   }, [])
   async function getRankBookList() {
@@ -34,7 +34,7 @@ const RankList: FC<IProps> = (props) => {
           <div
             onClick={(e) => navigate('/shop/bookDetail', { state: { curBookId: item.id } })}
             key={item.id}
-            className="flex p-2 bg-white bg-opacity-50 border border-white border-solid"
+            className="flex p-2 cursor-pointer bg-white bg-opacity-50 border border-white border-solid"
           >
             <div className="w-20 hidden sm:block">
               <div className="relative w-[60px] h-[60px]">
@@ -54,7 +54,7 @@ const RankList: FC<IProps> = (props) => {
               <div className="flex flex-col ">
                 <h2 className="text-xl font-bold">{item.name}</h2>
                 <span className="my-3">{item.author}</span>
-                <div className="flex w-40 min-[450px]:w-full">
+                <div className="flex w-40 min-[450px]:w-full ">
                   <span className="line-clamp-2 font-normal text-[#86909c]">{item.describe}</span>
                 </div>
                 <div className="mt-2 text-base text-[#1a66b3]">

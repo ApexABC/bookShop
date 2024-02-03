@@ -8,9 +8,11 @@ import classNames from 'classnames'
 import { CSSTransition } from 'react-transition-group'
 import Logo from '../logo'
 import Svg from '../Svg'
-import { verfiTokenIsPass } from '@/utils/verifyToken'
+import { verifyTokenPass } from '@/utils/verifyToken'
 import { shallowEqualApp, useAppDispatch, useAppSelector } from '@/store'
 import { setUserInfo } from '@/store/modules/user'
+import { reqCartTotalCount, reqCartList } from '@/service/modules/order'
+import { setCartCount, setCartList } from '@/store/modules/order'
 interface IProps {
   children?: ReactNode
 }
@@ -18,16 +20,17 @@ interface IProps {
 const AppHeader: FC<IProps> = (props) => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const { userInfoStore } = useAppSelector(
+  const { userInfoStore, curPathName } = useAppSelector(
     (state) => ({
-      userInfoStore: state.user.userInfo
+      userInfoStore: state.user.userInfo,
+      curPathName: state.user.curPathName
     }),
     shallowEqualApp
   )
   const [curItems, setCurItems] = useState<MenuProps['items']>([
     {
       key: '1',
-      label: <span>Hi! {userInfoStore.username}</span>
+      label: <span>Hi! {userInfoStore?.username}</span>
     },
     {
       key: '2',
@@ -47,7 +50,7 @@ const AppHeader: FC<IProps> = (props) => {
       }
     })
     testToken()
-    if (userInfoStore.type !== 'root') {
+    if (userInfoStore?.type !== 'root') {
       // 判断是否为超管显示下拉菜单内容
       curItems?.pop()
       setCurItems(curItems)
@@ -68,10 +71,15 @@ const AppHeader: FC<IProps> = (props) => {
   }
   const [userInfo, setuserInfo] = useState<false | Record<any, any>>(false)
   async function testToken() {
-    const result = await verfiTokenIsPass()
+    const result = await verifyTokenPass()
     if (!result) return setuserInfo(false)
     setuserInfo(result)
     dispatch(setUserInfo(result))
+    // 加载个人购物车信息
+    const { cartList } = await reqCartList()
+    const { count } = await reqCartTotalCount()
+    dispatch(setCartList(cartList))
+    dispatch(setCartCount(count))
   }
   const [isScrollAtTop, setIsScrollAtTop] = useState(true)
   const [isHamburOpen, setIsHamburOpen] = useState(false)
@@ -79,16 +87,26 @@ const AppHeader: FC<IProps> = (props) => {
     'shadow-inner': isHamburOpen,
     'shadow-blue-500/50': isHamburOpen
   })
+  console.log('header', curPathName)
+
   return (
     <AppHeaderWrapper $isScrollAtTop={isScrollAtTop}>
       <div className="flex justify-start items-center min-h-20 sm:justify-between ">
         <Logo></Logo>
         <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-start">
-          <ul className="flex justify-between ml-6 sm:w-3/4 lg:w-1/2 xl:w-1/3 ">
-            <li>购物车</li>
-            <li>订单</li>
-            <li>购物车</li>
-            <li>订单</li>
+          <ul className="flex justify-between ml-6  sm:w-3/4 lg:w-1/2 xl:w-1/3 ">
+            <li
+              style={{ color: `${curPathName === '/shop/car' ? '#1d4ed8' : '#000'}` }}
+              className="cursor-pointer font-bold hover:text-blue-700 transition-all"
+              onClick={(e) => navigate('/shop/car')}
+            >
+              购物车
+            </li>
+            <li className="cursor-pointer font-bold hover:text-blue-700 transition-all">订单</li>
+            <li className="cursor-pointer font-bold hover:text-blue-700 transition-all">消息</li>
+            <li className="cursor-pointer font-bold hover:text-blue-700 transition-all">
+              个人信息
+            </li>
           </ul>
         </div>
         <div className="hidden sm:flex">
@@ -131,10 +149,17 @@ const AppHeader: FC<IProps> = (props) => {
             type="text"
           />
           <ul className="ham-ul flex flex-col justify-between  sm:w-3/4 lg:w-1/2 xl:w-1/3 ">
-            <li>购物车</li>
-            <li>订单</li>
-            <li>购物车</li>
-            <li>订单</li>
+            <li
+              className="cursor-pointer font-bold hover:text-blue-700 transition-all"
+              onClick={(e) => navigate('/shop/car')}
+            >
+              购物车
+            </li>
+            <li className="cursor-pointer font-bold hover:text-blue-700 transition-all">订单</li>
+            <li className="cursor-pointer font-bold hover:text-blue-700 transition-all">消息</li>
+            <li className="cursor-pointer font-bold hover:text-blue-700 transition-all">
+              个人信息
+            </li>
           </ul>
         </div>
       </CSSTransition>

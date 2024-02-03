@@ -10,7 +10,7 @@ interface IProps {
 
 const BookDetail: FC<IProps> = (props) => {
   useEffect(() => {
-    window.scrollTo(0, 0)
+    // window.scrollTo(0, 0)
     fetchBookInfo()
   }, [])
   const location = useLocation()
@@ -24,7 +24,7 @@ const BookDetail: FC<IProps> = (props) => {
     setCurBookCommentList(commentList)
   }
   return (
-    <div>
+    <div className="h-full">
       {curBookInfo && <BookInfo bookInfo={curBookInfo}></BookInfo>}
       {curBookCommentList && (
         <BookComment

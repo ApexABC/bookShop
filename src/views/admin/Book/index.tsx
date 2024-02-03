@@ -1,11 +1,11 @@
 import React, { memo, useEffect, useState, useRef } from 'react'
 import type { FC, ReactNode } from 'react'
 import { BookWrapper } from './style'
-import { Table, Image, Button, Popconfirm, message, Input } from 'antd'
+import { Table, Image, Button, Popconfirm, message, Input, InputNumber } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import type { IBookData } from '@/type'
 import EditBookDialog from './c-cpns/EditBookDialog'
-import { deleteBook } from '@/service/modules/book'
+import { deleteBook, reqChangeBookInventory } from '@/service/modules/book'
 import AddBookDialog from './c-cpns/addBookDialog'
 import { searchBook, reqBookList } from '@/service/modules/book'
 import BindSortDialog from './c-cpns/bindSortDialog'
@@ -32,6 +32,22 @@ const Book: FC<IProps> = (props) => {
     { title: '价格', dataIndex: 'price', key: 'price', width: 80 },
     { title: '发行商', dataIndex: 'publisher', key: 'publisher', width: 100 },
     { title: '描述', dataIndex: 'describe', key: 'describe', ellipsis: true },
+    {
+      title: '库存',
+      dataIndex: 'inventory',
+      key: 'inventory',
+      width: 110,
+      render: (text, record) => {
+        return (
+          <InputNumber
+            min={0}
+            max={1000}
+            defaultValue={text}
+            onChange={(e) => handleInventoryChange(e, record)}
+          />
+        )
+      }
+    },
     {
       title: '操作',
       dataIndex: 'option',
@@ -92,6 +108,16 @@ const Book: FC<IProps> = (props) => {
     } catch (error) {
       message.warning('删除书籍失败，请重试')
     }
+  }
+  async function handleInventoryChange(e: any, item: any) {
+    if (e === null) return
+    const info = {
+      id: item.id,
+      inventory: e
+    }
+    const { code } = await reqChangeBookInventory(info)
+    if (code === 201) return message.success('修改库存成功')
+    message.warning('修改库存失败')
   }
   async function reloadBookList() {
     const { data } = await reqBookList(1000, 0)

@@ -120,7 +120,7 @@ const BookComment: FC<IProps> = ({ commentList, curBookId, fetchBookInfo }) => {
   }
   return (
     <div
-      className="bg-white bg-opacity-50  pt-4 px-5 sm:px-10 md:px-16 lg:px-20 xl:px-40 2xl:px-52"
+      className="pt-4 px-5 sm:px-10 md:px-16 lg:px-20 xl:px-40 2xl:px-52"
       style={{ borderTop: '1px solid #ccc' }}
     >
       <div className="flex items-center mb-4">
@@ -140,7 +140,7 @@ const BookComment: FC<IProps> = ({ commentList, curBookId, fetchBookInfo }) => {
           发布
         </Button>
       </div>
-      <div>
+      <div className="h-full">
         <div className="w-full flex justify-end text-gray-500">
           <span
             className="hover:text-pink-400 cursor-pointer mr-2"

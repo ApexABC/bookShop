@@ -56,3 +56,9 @@ export const reqBookCommentLike = (info: any) =>
     url: '/books/comment/like',
     data: queryString.stringify(info)
   })
+
+export const reqChangeBookInventory = (info: any) =>
+  request.post({
+    url: '/books/inventory',
+    data: queryString.stringify(info)
+  })

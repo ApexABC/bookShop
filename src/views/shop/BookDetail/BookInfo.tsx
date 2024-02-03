@@ -1,15 +1,36 @@
-import React, { memo } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import type { FC, ReactNode } from 'react'
-import { Rate } from 'antd'
+import { Rate, message, Badge } from 'antd'
+import { reqAddCart, reqCartTotalCount, reqCartList } from '@/service/modules/order'
+import { shallowEqualApp, useAppDispatch, useAppSelector } from '@/store'
+import { setCartCount, setCartList } from '@/store/modules/order'
 interface IProps {
   children?: ReactNode
   bookInfo: any
 }
 
 const BookInfo: FC<IProps> = ({ bookInfo }) => {
+  const dispatch = useAppDispatch()
+  const { totalCount } = useAppSelector(
+    (state) => ({
+      totalCount: state.order.cartCount
+    }),
+    shallowEqualApp
+  )
+  async function handleAddCart() {
+    const res = await reqAddCart(bookInfo.id)
+    if (res.code === 201) message.success('添加购物车成功')
+    getTotalCartCount()
+  }
+  async function getTotalCartCount() {
+    const { count } = await reqCartTotalCount()
+    dispatch(setCartCount(count))
+    const { cartList } = await reqCartList()
+    dispatch(setCartList(cartList))
+  }
   return (
     bookInfo && (
-      <div className="bg-white bg-opacity-50 pb-4">
+      <div className="pb-4">
         <div className="flex flex-col items-center sm:hidden">
           <div className="flex justify-center">
             <img className="w-52 h-80 shadow-xl" src={bookInfo.album} />
@@ -22,14 +43,19 @@ const BookInfo: FC<IProps> = ({ bookInfo }) => {
           </div>
           <div className="mt-4 px-6 text-sm text-[#818285] line-clamp-4">{bookInfo.describe}</div>
           <div className="flex justify-between w-full px-10 mt-3">
-            <button className="w-28 h-10 bg-yellow-300 font-medium">添加购物车</button>
+            <Badge count={totalCount}>
+              <button className="w-28 h-10 bg-yellow-300 font-medium" onClick={handleAddCart}>
+                添加购物车
+              </button>
+            </Badge>
+
             <button className="w-28 h-10 bg-red-500 text-white font-medium">立即购买</button>
           </div>
         </div>
         <div className="hidden  sm:flex border border-white p-10 md:px-[10%] lg:px-[20%] w-full h-[65vh]">
           <div className="flex justify-between  w-full h-[100%]">
-            <div className="flex items-center justify-center bg-[#f5f8fc] w-[43%]  h-full">
-              <img className="w-[70%] h-4/5 shadow-xl" src={bookInfo.album} />
+            <div className="flex items-center justify-center bg-white bg-opacity-50 w-[40%]  h-full">
+              <img className="w-[70%] h-[80%] shadow-xl" src={bookInfo.album} />
             </div>
             <div className="w-1/2  relative">
               <h1 className="pt-2 text-2xl text-[#1b3764]">{bookInfo.name}</h1>
@@ -46,7 +72,11 @@ const BookInfo: FC<IProps> = ({ bookInfo }) => {
                   type="text"
                   placeholder="1"
                 />
-                <button className="h-10 w-40 bg-[#ffca42]">加入购物车</button>
+                <Badge count={totalCount}>
+                  <button className="h-10 w-40 bg-[#ffca42] cursor-pointer" onClick={handleAddCart}>
+                    加入购物车
+                  </button>
+                </Badge>
               </div>
             </div>
           </div>

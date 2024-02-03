@@ -1,8 +1,12 @@
-import { Rate } from 'antd'
+import { Rate, Badge } from 'antd'
 import React, { memo } from 'react'
 import type { FC, ReactNode } from 'react'
 import Svg from './Svg'
 import { useNavigate } from 'react-router-dom'
+import { shallowEqualApp, useAppDispatch, useAppSelector } from '@/store'
+import { verifyTokenPass } from '@/utils/verifyToken'
+import { reqAddCart, reqCartList, reqCartTotalCount } from '@/service/modules/order'
+import { setCartCount, setCartList } from '@/store/modules/order'
 
 interface IProps {
   children?: ReactNode
@@ -11,6 +15,23 @@ interface IProps {
 
 const BookItem: FC<IProps> = ({ itemData }) => {
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+  const { totalCount, cartList } = useAppSelector(
+    (state) => ({
+      totalCount: state.order.cartCount,
+      cartList: state.order.cartList
+    }),
+    shallowEqualApp
+  )
+  async function handleCartBtn(e: React.MouseEvent<HTMLDivElement, MouseEvent>, item: any) {
+    if (!verifyTokenPass()) navigate('/login')
+    e.stopPropagation()
+    await reqAddCart(item.id)
+    const { cartList } = await reqCartList()
+    const { count } = await reqCartTotalCount()
+    dispatch(setCartList(cartList))
+    dispatch(setCartCount(count))
+  }
   return (
     <div
       className="flex flex-col cursor-pointer h-96 bg-white"
@@ -29,7 +50,17 @@ const BookItem: FC<IProps> = ({ itemData }) => {
           <Rate value={itemData.rate / 2} disabled allowHalf></Rate>
           <span className="ml-2">{itemData.rate}</span>
         </div>
-        <Svg name="购物车" size={23} color="#888"></Svg>
+        <Badge count={cartList.find((item: any) => item.bookId === itemData.id) ? totalCount : 0}>
+          <div onClick={(e) => handleCartBtn(e, itemData)}>
+            <Svg
+              name="购物车"
+              size={23}
+              color={`${
+                cartList.find((item: any) => item.bookId === itemData.id) ? '#fadb14' : '#888'
+              }`}
+            ></Svg>
+          </div>
+        </Badge>
       </div>
     </div>
   )
