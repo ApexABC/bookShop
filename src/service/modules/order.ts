@@ -16,3 +16,25 @@ export const reqAddCart = (bookId: number) =>
   request.post({ url: '/order/addCart', data: queryString.stringify({ bookId }) })
 
 export const reqCartTotalCount = () => request.get({ url: '/order/cartCount' })
+
+// 地址相关
+export const reqAddressList = () => request.get({ url: '/order/address' })
+
+// 订单相关
+export const reqSubOrder = (info: Record<string, any>) =>
+  request.post({
+    url: '/order/subOrder',
+    data: JSON.stringify(info),
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8'
+    }
+  })
+
+export const reqUserOrderList = () => request.get({ url: '/order/orderList/user' })
+
+export const reqAdminOrderList = () => request.get({ url: '/order/orderList/admin' })
+
+export const reqChangeOrderStatus = (info: any) =>
+  request.post({ url: '/order/changeOrderStatus', data: queryString.stringify(info) })
+
+export const reqSearchOrderStatus = () => request.get({ url: '/order/getOrderStatus' })

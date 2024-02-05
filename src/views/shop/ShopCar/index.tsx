@@ -5,6 +5,7 @@ import { setCartCount, setCartList as setCartListStore } from '@/store/modules/o
 import { Checkbox, Modal, message } from 'antd'
 import React, { memo, useEffect, useState } from 'react'
 import type { FC, ReactNode } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 interface IProps {
   children?: ReactNode
@@ -12,6 +13,7 @@ interface IProps {
 const { confirm } = Modal
 const ShopCar: FC<IProps> = (props) => {
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
   useEffect(() => {
     fetchCartList()
   }, [])
@@ -77,28 +79,38 @@ const ShopCar: FC<IProps> = (props) => {
       }
     })
   }
+  function handleSubOrder() {
+    navigate('/shop/subOrder', { state: { checkedItemList } })
+  }
   return (
     <div className="pb-16">
       <h1 className="pt-3 pl-6 text-2xl font-bold mb-2">购物车</h1>
-      <div className="w-full h-ful px-6 md:px-12 lg:px-16 xl:px-20">
-        {cartList &&
-          cartList.map((item) => (
-            <div
-              key={item.id}
-              className="flex items-center w-full border-b-2 border-solid border-white"
-            >
-              <div className="mr-5">
-                <Checkbox
-                  checked={checkedItemList?.find((i: any) => i.id === item.id)}
-                  onChange={(e) => handleItemBox(e, item)}
-                ></Checkbox>
+      {cartList?.length === 0 ? (
+        <div className="text-2xl text-center font-bold text-gray-600 mt-10">
+          您的购物车为空，请去选择书籍吧！
+        </div>
+      ) : (
+        <div className="w-full h-ful px-6 md:px-12 lg:px-16 xl:px-20">
+          {cartList &&
+            cartList.map((item) => (
+              <div
+                key={item.id}
+                className="flex items-center w-full border-b-2 border-solid border-white"
+              >
+                <div className="mr-5">
+                  <Checkbox
+                    checked={checkedItemList?.find((i: any) => i.id === item.id)}
+                    onChange={(e) => handleItemBox(e, item)}
+                  ></Checkbox>
+                </div>
+                <div className="w-full">
+                  <OrderItem itemData={item} fetchCartList={fetchCartList}></OrderItem>
+                </div>
               </div>
-              <div className="w-full">
-                <OrderItem itemData={item} fetchCartList={fetchCartList}></OrderItem>
-              </div>
-            </div>
-          ))}
-      </div>
+            ))}
+        </div>
+      )}
+
       <div className="fixed bottom-0 w-full h-16 px-6 md:px-12 lg:px-16 xl:px-20 bg-white bg-opacity-80">
         <div className="flex items-center w-full h-full">
           <div className="mr-1">
@@ -119,7 +131,10 @@ const ShopCar: FC<IProps> = (props) => {
             <span className="flex items-center text-sm mr-2">
               合计<span className="text-orange-600 text-lg">￥{totalPrice}</span>
             </span>
-            <button className="w-20 h-10 rounded-3xl cursor-pointer text-white bg-orange-600 font-bold text-base">
+            <button
+              onClick={handleSubOrder}
+              className="w-20 h-10 rounded-3xl cursor-pointer text-white bg-orange-600 font-bold text-base"
+            >
               结算
             </button>
           </div>

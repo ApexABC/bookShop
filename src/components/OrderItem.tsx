@@ -8,9 +8,10 @@ interface IProps {
   children?: ReactNode
   itemData: Record<string, any>
   fetchCartList?: () => void
+  orderStatus?: boolean
 }
 
-const OrderItem: FC<IProps> = ({ itemData, fetchCartList }) => {
+const OrderItem: FC<IProps> = ({ itemData, fetchCartList, orderStatus = false }) => {
   // function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
   //   console.log(e.target.value)
   // }
@@ -44,27 +45,24 @@ const OrderItem: FC<IProps> = ({ itemData, fetchCartList }) => {
       <div className="flex flex-col items-center justify-center w-30 h-full py-3 -translate-y-3">
         <div className="font-bold mb-3 text-orange-500">￥{itemData.price}</div>
         <div className="flex items-center">
-          <div className="flex items-center h-7 bg-white rounded-md border-2 border-solid border-[#dee2e7]">
-            <div className="cursor-pointer" onClick={(e) => SvgChange(itemData, '减')}>
-              <Svg name="减号" color="#8b96a5"></Svg>
+          {orderStatus ? (
+            <div>×{itemData.count}</div>
+          ) : (
+            <div className="flex items-center h-7 bg-white rounded-md border-2 border-solid border-[#dee2e7]">
+              <div className="cursor-pointer" onClick={(e) => SvgChange(itemData, '减')}>
+                <Svg name="减号" color="#8b96a5"></Svg>
+              </div>
+              <span
+                style={{ borderLeft: '2px solid #dee2e7', borderRight: '2px solid #dee2e7' }}
+                className="flex items-center justify-center text-sm select-none w-10 h-full box-border border-[#dee2e7]"
+              >
+                {itemData.count}
+              </span>
+              <div className="cursor-pointer" onClick={(e) => SvgChange(itemData, '加')}>
+                <Svg name="加号" color="#8b96a5"></Svg>
+              </div>
             </div>
-            <span
-              style={{ borderLeft: '2px solid #dee2e7', borderRight: '2px solid #dee2e7' }}
-              className="flex items-center justify-center text-sm select-none w-10 h-full box-border border-[#dee2e7]"
-            >
-              {itemData.count}
-            </span>
-            {/* <input
-              style={{ borderLeft: '2px solid #dee2e7' }}
-              className="text-center w-10 h-full border-y-0 outline-none box-border border-x-2 border-[#dee2e7]"
-              type="text"
-              value={itemData.count}
-              onChange={(e) => handleInputChange(e)}
-            /> */}
-            <div className="cursor-pointer" onClick={(e) => SvgChange(itemData, '加')}>
-              <Svg name="加号" color="#8b96a5"></Svg>
-            </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

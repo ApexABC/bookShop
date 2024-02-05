@@ -87,8 +87,6 @@ const AppHeader: FC<IProps> = (props) => {
     'shadow-inner': isHamburOpen,
     'shadow-blue-500/50': isHamburOpen
   })
-  console.log('header', curPathName)
-
   return (
     <AppHeaderWrapper $isScrollAtTop={isScrollAtTop}>
       <div className="flex justify-start items-center min-h-20 sm:justify-between ">
@@ -96,13 +94,21 @@ const AppHeader: FC<IProps> = (props) => {
         <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-start">
           <ul className="flex justify-between ml-6  sm:w-3/4 lg:w-1/2 xl:w-1/3 ">
             <li
-              style={{ color: `${curPathName === '/shop/car' ? '#1d4ed8' : '#000'}` }}
-              className="cursor-pointer font-bold hover:text-blue-700 transition-all"
+              className={classNames('cursor-pointer font-bold hover:text-blue-700 transition-all', {
+                'text-[#1d4ed8]': curPathName === '/shop/car'
+              })}
               onClick={(e) => navigate('/shop/car')}
             >
               购物车
             </li>
-            <li className="cursor-pointer font-bold hover:text-blue-700 transition-all">订单</li>
+            <li
+              className={classNames('cursor-pointer font-bold hover:text-blue-700 transition-all', {
+                'text-[#1d4ed8]': curPathName === '/shop/order'
+              })}
+              onClick={(e) => navigate('/shop/order')}
+            >
+              订单
+            </li>
             <li className="cursor-pointer font-bold hover:text-blue-700 transition-all">消息</li>
             <li className="cursor-pointer font-bold hover:text-blue-700 transition-all">
               个人信息

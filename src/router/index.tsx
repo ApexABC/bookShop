@@ -8,11 +8,15 @@ const RankList = lazy(() => import('@/views/shop/RankList'))
 const Login = lazy(() => import('@/views/shop/Login'))
 const BookDetail = lazy(() => import('@/views/shop/BookDetail'))
 const ShopCar = lazy(() => import('@/views/shop/ShopCar'))
+const Order = lazy(() => import('@/views/shop/Order'))
+const SubOrder = lazy(() => import('@/views/shop/SubOrder'))
+const BoughtSuccess = lazy(() => import('@/views/shop/BoughtSuccess'))
 
 const Admin = lazy(() => import('@/views/admin'))
 const Book = lazy(() => import('@/views/admin/Book'))
 const Rank = lazy(() => import('@/views/admin/Rank'))
 const Sort = lazy(() => import('@/views/admin/Sort'))
+const OrderAdmin = lazy(() => import('@/views/admin/Order'))
 const routes: RouteObject[] = [
   {
     path: '/',
@@ -27,7 +31,10 @@ const routes: RouteObject[] = [
       { path: '/shop/bookList', element: <BookList /> },
       { path: '/shop/rankList', element: <RankList /> },
       { path: '/shop/bookDetail', element: <BookDetail /> },
-      { path: '/shop/car', element: <ShopCar /> }
+      { path: '/shop/car', element: <ShopCar /> },
+      { path: '/shop/order', element: <Order /> },
+      { path: '/shop/subOrder', element: <SubOrder /> },
+      { path: '/shop/boughtSuccess', element: <BoughtSuccess /> }
     ]
   },
   {
@@ -39,7 +46,7 @@ const routes: RouteObject[] = [
     element: <Admin />,
     children: [
       { path: '/admin', element: <Navigate to={'/admin/book'} /> },
-      { path: '/admin/order', element: <Sort /> },
+      { path: '/admin/order', element: <OrderAdmin /> },
       { path: '/admin/book', element: <Book /> },
       { path: '/admin/rank', element: <Rank /> },
       { path: '/admin/sort', element: <Sort /> }
