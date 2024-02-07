@@ -3,6 +3,7 @@ import type { FC, ReactNode } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { reqRankBookListById } from '@/service/modules/rank'
 import Svg from '@/components/Svg'
+import { formatRate } from '@/utils/formatDate'
 interface IProps {
   children?: ReactNode
 }
@@ -67,7 +68,7 @@ const RankList: FC<IProps> = (props) => {
               </div>
             </div>
             <div className="w-10 text-2xl font-bold" style={{ color: `${rankColor(index, true)}` }}>
-              {item.rate}
+              {formatRate(item.rate)}
             </div>
           </div>
         ))}

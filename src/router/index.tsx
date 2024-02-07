@@ -11,6 +11,9 @@ const ShopCar = lazy(() => import('@/views/shop/ShopCar'))
 const Order = lazy(() => import('@/views/shop/Order'))
 const SubOrder = lazy(() => import('@/views/shop/SubOrder'))
 const BoughtSuccess = lazy(() => import('@/views/shop/BoughtSuccess'))
+const SelfInfo = lazy(() => import('@/views/shop/SelfInfo'))
+const AddressList = lazy(() => import('@/views/shop/Address'))
+const AddressInfo = lazy(() => import('@/views/shop/Address/AddressInfo'))
 
 const Admin = lazy(() => import('@/views/admin'))
 const Book = lazy(() => import('@/views/admin/Book'))
@@ -34,7 +37,10 @@ const routes: RouteObject[] = [
       { path: '/shop/car', element: <ShopCar /> },
       { path: '/shop/order', element: <Order /> },
       { path: '/shop/subOrder', element: <SubOrder /> },
-      { path: '/shop/boughtSuccess', element: <BoughtSuccess /> }
+      { path: '/shop/boughtSuccess', element: <BoughtSuccess /> },
+      { path: '/shop/selfInfo', element: <SelfInfo /> },
+      { path: '/shop/addressList', element: <AddressList /> },
+      { path: '/shop/addressInfo', element: <AddressInfo /> }
     ]
   },
   {

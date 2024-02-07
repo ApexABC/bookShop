@@ -92,6 +92,12 @@ const Login: FC<IProps> = (props) => {
                   {isLogin ? '注册' : '登录'}
                 </span>
               </div>
+              <div className="mt-3 text-center text-base text-[#a6a6a6]">
+                不想{isLogin ? '登录' : '注册'}？
+                <span className="cursor-pointer text-[#1e4ae9]" onClick={(e) => navigate('/')}>
+                  回到首页
+                </span>
+              </div>
             </div>
           </div>
           <div className="hidden lg:block w-[39%] h-full">

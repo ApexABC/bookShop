@@ -72,7 +72,11 @@ const AppHeader: FC<IProps> = (props) => {
   const [userInfo, setuserInfo] = useState<false | Record<any, any>>(false)
   async function testToken() {
     const result = await verifyTokenPass()
-    if (!result) return setuserInfo(false)
+    if (!result) {
+      // 不通过token操作
+      dispatch(setCartCount(0))
+      return setuserInfo(false)
+    }
     setuserInfo(result)
     dispatch(setUserInfo(result))
     // 加载个人购物车信息
@@ -110,7 +114,12 @@ const AppHeader: FC<IProps> = (props) => {
               订单
             </li>
             <li className="cursor-pointer font-bold hover:text-blue-700 transition-all">消息</li>
-            <li className="cursor-pointer font-bold hover:text-blue-700 transition-all">
+            <li
+              className={classNames('cursor-pointer font-bold hover:text-blue-700 transition-all', {
+                'text-[#1d4ed8]': curPathName === '/shop/selfInfo'
+              })}
+              onClick={(e) => navigate('/shop/selfInfo')}
+            >
               个人信息
             </li>
           </ul>

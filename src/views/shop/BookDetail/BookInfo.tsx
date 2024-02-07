@@ -1,15 +1,23 @@
 import React, { memo, useEffect, useState } from 'react'
 import type { FC, ReactNode } from 'react'
 import { Rate, message, Badge } from 'antd'
-import { reqAddCart, reqCartTotalCount, reqCartList } from '@/service/modules/order'
+import {
+  reqAddCart,
+  reqCartTotalCount,
+  reqCartList,
+  reqAddCartImmediate
+} from '@/service/modules/order'
 import { shallowEqualApp, useAppDispatch, useAppSelector } from '@/store'
 import { setCartCount, setCartList } from '@/store/modules/order'
+import { verifyTokenPass } from '@/utils/verifyToken'
+import { useNavigate } from 'react-router-dom'
 interface IProps {
   children?: ReactNode
   bookInfo: any
 }
 
 const BookInfo: FC<IProps> = ({ bookInfo }) => {
+  const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const { totalCount } = useAppSelector(
     (state) => ({
@@ -18,10 +26,26 @@ const BookInfo: FC<IProps> = ({ bookInfo }) => {
     shallowEqualApp
   )
   async function handleAddCart() {
+    const isPassToken = await verifyTokenPass()
+    if (!isPassToken) {
+      return navigate('/login')
+    }
+
     const res = await reqAddCart(bookInfo.id)
     if (res.code === 201) message.success('添加购物车成功')
     getTotalCartCount()
   }
+  async function handleImmediateBuy() {
+    const isPassToken = await verifyTokenPass()
+    if (!isPassToken) {
+      return navigate('/login')
+    }
+    const { cartId } = await reqAddCartImmediate(bookInfo.id)
+    const { cartList } = await reqCartList()
+    const info = cartList.find((item: any) => item.id === cartId)
+    navigate('/shop/subOrder', { state: { checkedItemList: [info] } })
+  }
+
   async function getTotalCartCount() {
     const { count } = await reqCartTotalCount()
     dispatch(setCartCount(count))
@@ -49,7 +73,12 @@ const BookInfo: FC<IProps> = ({ bookInfo }) => {
               </button>
             </Badge>
 
-            <button className="w-28 h-10 bg-red-500 text-white font-medium">立即购买</button>
+            <button
+              onClick={handleImmediateBuy}
+              className="w-28 h-10 bg-red-500 text-white font-medium"
+            >
+              立即购买
+            </button>
           </div>
         </div>
         <div className="hidden  sm:flex border border-white p-10 md:px-[10%] lg:px-[20%] w-full h-[65vh]">
@@ -66,17 +95,23 @@ const BookInfo: FC<IProps> = ({ bookInfo }) => {
               <div className="mt-5 text-[#969aa0]">出版社：{bookInfo.publisher}</div>
               <div className="mt-5 text-[#969aa0]">发布时间：{bookInfo.pubtime}</div>
               <div className="absolute flex items-center justify-start bottom-6">
-                <input
+                {/* <input
                   style={{ border: 'solid 2px #ffca42' }}
                   className="h-9 w-16 mr-2  outline-none text-center text-[#969aa0]"
                   type="text"
                   placeholder="1"
-                />
+                /> */}
                 <Badge count={totalCount}>
                   <button className="h-10 w-40 bg-[#ffca42] cursor-pointer" onClick={handleAddCart}>
                     加入购物车
                   </button>
                 </Badge>
+                <button
+                  onClick={handleImmediateBuy}
+                  className="w-40 h-10 ml-5 bg-red-500 text-white font-medium"
+                >
+                  立即购买
+                </button>
               </div>
             </div>
           </div>

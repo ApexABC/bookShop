@@ -7,7 +7,7 @@ import { shallowEqualApp, useAppDispatch, useAppSelector } from '@/store'
 import { verifyTokenPass } from '@/utils/verifyToken'
 import { reqAddCart, reqCartList, reqCartTotalCount } from '@/service/modules/order'
 import { setCartCount, setCartList } from '@/store/modules/order'
-
+import { formatRate } from '@/utils/formatDate'
 interface IProps {
   children?: ReactNode
   itemData: Record<any, any>
@@ -48,7 +48,7 @@ const BookItem: FC<IProps> = ({ itemData }) => {
       <div className="flex items-center justify-between h-8 px-3">
         <div className="flex items-center">
           <Rate value={itemData.rate / 2} disabled allowHalf></Rate>
-          <span className="ml-2">{itemData.rate}</span>
+          <span className="ml-2">{formatRate(itemData.rate)}</span>
         </div>
         <Badge count={cartList.find((item: any) => item.bookId === itemData.id) ? totalCount : 0}>
           <div onClick={(e) => handleCartBtn(e, itemData)}>

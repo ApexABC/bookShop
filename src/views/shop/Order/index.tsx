@@ -84,7 +84,7 @@ const Order: FC<IProps> = (props) => {
           ))}
         </header>
       </div>
-      {curShowOrderList.length === 0 ? (
+      {curOrderList.length === 0 ? (
         <div className="text-2xl text-center font-bold text-gray-600 mt-10">
           您的还没购买过书籍，快去下单吧！
         </div>

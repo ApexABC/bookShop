@@ -10,11 +10,13 @@ const allowNoTokenPath = [
   '/shop/rankList',
   '/shop/bookDetail'
 ]
+// const noScrollTopPath = ['/shop/bookList', '/shop/rankList']
 const AuthRoute = (props?: any) => {
   const token = localStorage.getItem('token')
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   useEffect(() => {
+    // if (!noScrollTopPath.includes(location.pathname)) window.scrollTo(0, 0)
     dispatch(setCurPathName(location.pathname))
     // console.log(location.pathname)
     if (allowNoTokenPath.includes(location.pathname)) return

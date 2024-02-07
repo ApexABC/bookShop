@@ -18,14 +18,22 @@ const SubOrder: FC<IProps> = (props) => {
   const location = useLocation()
   const { checkedItemList } = location.state
   useEffect(() => {
+    console.log('subOrder', location)
+
     fetchAddressList()
   }, [])
-  const [curAddressList, setCurAddressList] = useState<any[]>()
+  // const [curAddressList, setCurAddressList] = useState<any[]>()
   const [curDefaultAddress, setCurDefaultAddress] = useState<Record<string, any>>({})
   async function fetchAddressList() {
-    const { addressList } = await reqAddressList()
-    setCurAddressList(addressList)
-    setCurDefaultAddress(addressList?.find((item: any) => !!item.isDefault))
+    try {
+      if (Object.keys(location.state?.selectedAddressInfo).length !== 0) {
+        return setCurDefaultAddress(location.state?.selectedAddressInfo)
+      }
+    } catch (error) {
+      const { addressList } = await reqAddressList()
+      // setCurAddressList(addressList)
+      setCurDefaultAddress(addressList?.find((item: any) => !!item.isDefault))
+    }
   }
   const [isSpinning, setIsSpinning] = useState(false)
   async function handleSubOrder() {
@@ -56,21 +64,40 @@ const SubOrder: FC<IProps> = (props) => {
     <Spin spinning={isSpinning} tip={'模拟支付中...'}>
       <div>
         <div className="bg-slate-100 rounded-lg mx-2 p-2 sm:mx-4 overflow-hidden">
-          <div className="flex items-center p-2 bg-white mb-3 rounded-md shadow-sm">
+          <div className=" flex items-center p-2 bg-white mb-3 rounded-md shadow-sm">
             <div className="mr-2">
               <Svg name="地址" size={30}></Svg>
             </div>
-            <div>
-              <div className="mb-1">
-                <span className="mr-1">{curDefaultAddress?.name}</span>
-                <span className="text-sm text-gray-400">{curDefaultAddress?.phone}</span>
+            {curDefaultAddress === undefined ? (
+              <div
+                onClick={(e) =>
+                  navigate('/shop/addressList', { state: { selectAddress: true, checkedItemList } })
+                }
+                className="flex items-center justify-between w-full cursor-pointer leading-10 h-10 text-gray-600 font-bold hover:text-blue-500"
+              >
+                选择收货地址
               </div>
-              <span className="text-sm text-gray-600">
-                {curDefaultAddress?.province}
-                {curDefaultAddress?.city}
-                {curDefaultAddress?.district}
-                {curDefaultAddress?.address}
-              </span>
+            ) : (
+              <div
+                className="w-full cursor-pointer"
+                onClick={(e) =>
+                  navigate('/shop/addressList', { state: { selectAddress: true, checkedItemList } })
+                }
+              >
+                <div className="mb-1">
+                  <span className="mr-1">{curDefaultAddress?.name}</span>
+                  <span className="text-sm text-gray-400">{curDefaultAddress?.phone}</span>
+                </div>
+                <span className="text-sm text-gray-600">
+                  {curDefaultAddress?.province}
+                  {curDefaultAddress?.city}
+                  {curDefaultAddress?.district}
+                  {curDefaultAddress?.address}
+                </span>
+              </div>
+            )}
+            <div>
+              <Svg name="更多" size={20}></Svg>
             </div>
           </div>
           <div className="px-2 pb-2 bg-white rounded-md shadow-sm">

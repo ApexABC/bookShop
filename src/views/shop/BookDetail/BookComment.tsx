@@ -175,12 +175,12 @@ const BookComment: FC<IProps> = ({ commentList, curBookId, fetchBookInfo }) => {
                 >
                   <Svg
                     name="赞"
-                    color={item.likeList?.includes(userInfo.id) ? '#f472bd' : '#777'}
+                    color={item.likeList?.includes(userInfo?.id) ? '#f472bd' : '#777'}
                   ></Svg>
                   <span
                     className="ml-2 "
                     style={{
-                      color: `${item.likeList?.includes(userInfo.id) ? '#f472bd' : '#777'}`
+                      color: `${item.likeList?.includes(userInfo?.id) ? '#f472bd' : '#777'}`
                     }}
                   >
                     {item.like}
@@ -203,7 +203,7 @@ const BookComment: FC<IProps> = ({ commentList, curBookId, fetchBookInfo }) => {
                     className="cursor-pointer ml-3 text-sm text-gray-500 hover:text-blue-600"
                     style={{
                       display: `${
-                        userInfo.id === item.userId || userInfo.type === 'root' ? 'block' : 'none'
+                        userInfo?.id === item.userId || userInfo?.type === 'root' ? 'block' : 'none'
                       }`
                     }}
                   >
@@ -254,13 +254,13 @@ const BookComment: FC<IProps> = ({ commentList, curBookId, fetchBookInfo }) => {
                       >
                         <Svg
                           name="赞"
-                          color={itemChildren.likeList?.includes(userInfo.id) ? '#f472bd' : '#777'}
+                          color={itemChildren.likeList?.includes(userInfo?.id) ? '#f472bd' : '#777'}
                         ></Svg>
                         <span
                           className="ml-2 "
                           style={{
                             color: `${
-                              itemChildren.likeList?.includes(userInfo.id) ? '#f472bd' : '#777'
+                              itemChildren.likeList?.includes(userInfo?.id) ? '#f472bd' : '#777'
                             }`
                           }}
                         >
@@ -284,7 +284,7 @@ const BookComment: FC<IProps> = ({ commentList, curBookId, fetchBookInfo }) => {
                           className="cursor-pointer ml-3 text-sm text-gray-500 hover:text-blue-600"
                           style={{
                             display: `${
-                              userInfo.id === itemChildren.userId || userInfo.type === 'root'
+                              userInfo?.id === itemChildren.userId || userInfo?.type === 'root'
                                 ? 'block'
                                 : 'none'
                             }`
