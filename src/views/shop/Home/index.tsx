@@ -8,6 +8,7 @@ import SortItem from '@/components/SortItem'
 import { searchRandomBook } from '@/service/modules/book'
 import BookItem from '@/components/BookItem'
 import { useNavigate } from 'react-router-dom'
+import AppFooter from '@/components/AppFooter'
 interface IProps {
   children?: ReactNode
 }
@@ -41,15 +42,16 @@ const Home: FC<IProps> = (props) => {
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-bold my-3">推荐书籍</h1>
         <span
-          className="cursor-pointer"
+          className="cursor-pointer text-blue-700 font-bold hover:text-blue-500"
           onClick={(e) => navigate('/shop/bookList', { state: { title: '推荐书籍' } })}
         >
           查看更多
         </span>
       </div>
-      <div className="grid gap-x-2 gap-y-2  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+      <div className="grid gap-x-2 gap-y-2 mb-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         {bookList?.map((item) => <BookItem itemData={item} key={item.id}></BookItem>)}
       </div>
+      <AppFooter></AppFooter>
     </HomeWrapper>
   )
 }

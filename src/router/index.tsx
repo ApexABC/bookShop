@@ -16,6 +16,7 @@ const AddressList = lazy(() => import('@/views/shop/Address'))
 const AddressInfo = lazy(() => import('@/views/shop/Address/AddressInfo'))
 
 const Admin = lazy(() => import('@/views/admin'))
+const DashBoard = lazy(() => import('@/views/admin/DashBoard'))
 const Book = lazy(() => import('@/views/admin/Book'))
 const Rank = lazy(() => import('@/views/admin/Rank'))
 const Sort = lazy(() => import('@/views/admin/Sort'))
@@ -51,7 +52,8 @@ const routes: RouteObject[] = [
     path: '/admin',
     element: <Admin />,
     children: [
-      { path: '/admin', element: <Navigate to={'/admin/book'} /> },
+      { path: '/admin', element: <Navigate to={'/admin/dashBoard'} /> },
+      { path: '/admin/dashBoard', element: <DashBoard /> },
       { path: '/admin/order', element: <OrderAdmin /> },
       { path: '/admin/book', element: <Book /> },
       { path: '/admin/rank', element: <Rank /> },

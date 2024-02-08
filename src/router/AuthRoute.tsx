@@ -16,7 +16,7 @@ const AuthRoute = (props?: any) => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   useEffect(() => {
-    // if (!noScrollTopPath.includes(location.pathname)) window.scrollTo(0, 0)
+    window.scrollTo(0, 0)
     dispatch(setCurPathName(location.pathname))
     // console.log(location.pathname)
     if (allowNoTokenPath.includes(location.pathname)) return

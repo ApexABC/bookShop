@@ -28,6 +28,7 @@ function getItem(
 }
 
 const items: MenuProps['items'] = [
+  getItem('仪表盘', '/dashBoard', <Svg name="仪表盘" />),
   getItem('订单管理', '/order', <Svg name="订单" />),
   getItem('书籍管理', '/book', <Svg name="书吧" />),
   getItem('榜单管理', '/rank', <Svg name="榜单" />),
@@ -50,7 +51,7 @@ const AsideMenu: FC<IProps> = (props) => {
       <Menu
         onClick={onClick}
         style={{ width: 256 }}
-        defaultSelectedKeys={['/book']}
+        defaultSelectedKeys={['/dashBoard']}
         // defaultOpenKeys={['sub1']}
         mode="inline"
         items={items}

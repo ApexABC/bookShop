@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { reqRankBookListById } from '@/service/modules/rank'
 import Svg from '@/components/Svg'
 import { formatRate } from '@/utils/formatDate'
+import AppFooter from '@/components/AppFooter'
 interface IProps {
   children?: ReactNode
 }
@@ -30,7 +31,7 @@ const RankList: FC<IProps> = (props) => {
   return (
     <div>
       <h1 className="text-3xl font-bold ml-6 pt-5 mb-5">{title}</h1>
-      <div className="grid gap-1 lg:grid-cols-2 px-2">
+      <div className="mb-2 grid gap-1 lg:grid-cols-2 px-2">
         {rankBookList?.map((item, index) => (
           <div
             onClick={(e) => navigate('/shop/bookDetail', { state: { curBookId: item.id } })}
@@ -73,6 +74,7 @@ const RankList: FC<IProps> = (props) => {
           </div>
         ))}
       </div>
+      <AppFooter></AppFooter>
     </div>
   )
 }

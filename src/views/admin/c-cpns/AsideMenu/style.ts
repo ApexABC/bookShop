@@ -5,6 +5,6 @@ export const AsideMenuWrapper = styled.div`
   border-top: 0;
   border-bottom: 0;
   .ant-menu-title-content {
-    margin-left: 5px;
+    margin-left: 10px;
   }
 `
