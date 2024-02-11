@@ -41,7 +41,9 @@ const BookItem: FC<IProps> = ({ itemData }) => {
         <img className="w-40 h-56" src={itemData.album} />
       </div>
       <div className="flex items-center justify-between h-11 px-3">
-        <div className="text-xl font-semibold text-[#1b3764] w-3/4 truncate">{itemData.name}</div>
+        <div className="text-xl font-semibold text-[#1b3764] w-[50vw] truncate">
+          {itemData.name}
+        </div>
         <span className="text-lg font-semibold text-[#ffca42]">￥{itemData.price}</span>
       </div>
       <div className="line-clamp-2 px-2 text-[#969aa0] text-base">{itemData.describe}</div>

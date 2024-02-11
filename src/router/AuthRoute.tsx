@@ -8,7 +8,8 @@ const allowNoTokenPath = [
   '/shop/home',
   '/shop/bookList',
   '/shop/rankList',
-  '/shop/bookDetail'
+  '/shop/bookDetail',
+  '/shop/search'
 ]
 // const noScrollTopPath = ['/shop/bookList', '/shop/rankList']
 const AuthRoute = (props?: any) => {

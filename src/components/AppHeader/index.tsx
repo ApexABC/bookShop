@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react'
+import React, { memo, useEffect, useState, useCallback } from 'react'
 import type { FC, ReactNode } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { AppHeaderWrapper } from './style'
@@ -13,6 +13,9 @@ import { shallowEqualApp, useAppDispatch, useAppSelector } from '@/store'
 import { setUserInfo } from '@/store/modules/user'
 import { reqCartTotalCount, reqCartList } from '@/service/modules/order'
 import { setCartCount, setCartList } from '@/store/modules/order'
+import debounce from 'lodash/debounce'
+import { reqSearchUserByLike } from '@/service/modules/user'
+import { searchBook } from '@/service/modules/book'
 interface IProps {
   children?: ReactNode
 }
@@ -91,6 +94,28 @@ const AppHeader: FC<IProps> = (props) => {
     'shadow-inner': isHamburOpen,
     'shadow-blue-500/50': isHamburOpen
   })
+  const [searchInputVal, setSearchInputVal] = useState('')
+  const [searchUserRes, setSearchUserRes] = useState([])
+  const [searchBookRes, serSearchBookRes] = useState([])
+  function handleSearchInput(e: React.ChangeEvent<HTMLInputElement>) {
+    const val = e.target.value
+    setSearchInputVal(val)
+    if (val === '') return
+    debouncedSearch(val)
+  }
+  const debouncedSearch = useCallback(debounce(searchInfo, 500), [])
+  async function searchInfo(val: string) {
+    const { userList } = await reqSearchUserByLike(val)
+    setSearchUserRes(userList)
+    const {
+      data: { bookList }
+    } = await searchBook(val)
+    serSearchBookRes(bookList)
+  }
+  function goSearchPage() {
+    setSearchInputVal('')
+    navigate('/shop/search', { state: { searchVal: searchInputVal } })
+  }
   return (
     <AppHeaderWrapper $isScrollAtTop={isScrollAtTop}>
       <div className="flex justify-start items-center min-h-20 sm:justify-between ">
@@ -125,11 +150,69 @@ const AppHeader: FC<IProps> = (props) => {
           </ul>
         </div>
         <div className="hidden sm:flex">
-          <input
-            className="w-20 h-8 pl-3 rounded-3xl border-violet-300 outline-none md:w-52  xl:mr-20"
-            placeholder="搜索书籍"
-            type="text"
-          />
+          <div className="relative flex justify-center">
+            <div className="w-20 h-8 relative md:w-52 mr-5">
+              <input
+                className="w-full md:w-52  pl-3 h-8 rounded-3xl border-violet-300 outline-none "
+                placeholder="搜索"
+                type="text"
+                autoComplete="off"
+                value={searchInputVal}
+                onChange={(e) => handleSearchInput(e)}
+                onKeyUp={(e) => {
+                  if (e.code === 'Enter') goSearchPage()
+                }}
+              />
+              <div className="absolute top-[5px] -right-1 cursor-pointer" onClick={goSearchPage}>
+                <Svg name="search" size={25} color="#aaa"></Svg>
+              </div>
+            </div>
+            {searchInputVal !== '' && (
+              <div className="absolute top-10 -left-5 md:left-0 w-[25vw] lg:w-[21vw] xl:w-[17vw] h-72 px-2 py-2 pt-2 bg-white border border-solid  border-gray-300 rounded-lg shadow-sm">
+                <span className="block text-sm font-bold text-blue-600">搜索书籍</span>
+                <ul className="my-1 pt-1 h-[40%] w-full  overflow-y-scroll ">
+                  {searchBookRes.length === 0 ? (
+                    <span className=" block w-full text-center text-xl text-gray-500">
+                      暂无结果
+                    </span>
+                  ) : (
+                    searchBookRes?.map((item: any) => (
+                      <li
+                        key={item.id}
+                        className="flex items-center w-full h-10 cursor-pointer border-b border-solid border-gray-400"
+                      >
+                        <img src={item.album} className=" w-6 mr-2" />
+                        <span className="flex items-center w-full truncate">
+                          <span className=" text-black mr-1">{item.name}</span>--
+                          <span className=" text-gray-500 text-sm ml-1">{item.author}</span>
+                        </span>
+                      </li>
+                    ))
+                  )}
+                </ul>
+                <span className="block text-sm font-bold text-blue-600">搜索用户</span>
+                <ul className="my-1 pt-1 h-[40%]  overflow-y-scroll ">
+                  {searchUserRes.length === 0 ? (
+                    <span className=" block w-full text-center text-xl text-gray-500">
+                      暂无结果
+                    </span>
+                  ) : (
+                    searchUserRes?.map((item: any) => (
+                      <li
+                        key={item.id}
+                        className="flex items-center  h-10 cursor-pointer border-b border-solid border-gray-400"
+                      >
+                        <Avatar src={item.avatar} size={32} />
+                        <span className="flex items-center w-full truncate ml-1">
+                          <span className=" text-black mr-1">{item.username}</span>
+                        </span>
+                      </li>
+                    ))
+                  )}
+                </ul>
+              </div>
+            )}
+          </div>
         </div>
         <div className="flex-1 flex justify-end mr-5 w-14 sm:flex-none">
           {userInfo ? (
@@ -155,14 +238,73 @@ const AppHeader: FC<IProps> = (props) => {
           className={classNames(
             'flex flex-col bg-white items-center justify-around h-52  w-full sm:hidden'
           )}
-          style={{ backgroundColor: 'rgba(255,255,255,0.8)', border: '1px solid #fff' }}
+          style={{ backgroundColor: 'rgba(255,255,255,0.8)', borderTop: '1px solid #ccc' }}
         >
-          <input
-            className="w-3/4 h-6 my-7 pl-3 rounded-3xl border-white outline-none"
-            style={{ margin: '0 auto' }}
-            placeholder="搜索书籍"
-            type="text"
-          />
+          <div
+            className="absolute top-[88px] right-[13%] cursor-pointer z-10"
+            onClick={goSearchPage}
+          >
+            <Svg name="search" size={25} color="#aaa"></Svg>
+          </div>
+          <div className="w-full relative flex justify-center">
+            <input
+              className="w-3/4 h-7 my-7 pl-3 rounded-3xl border-purple-400 outline-none"
+              style={{ margin: '0 auto' }}
+              placeholder="搜索"
+              type="text"
+              value={searchInputVal}
+              onChange={(e) => handleSearchInput(e)}
+              onKeyUp={(e) => {
+                if (e.code === 'Enter') goSearchPage()
+              }}
+            />
+
+            {searchInputVal !== '' && (
+              <div className="absolute top-9 w-[80%] h-64 px-2 pt-1 bg-white border border-solid  border-gray-300 rounded-sm shadow-sm">
+                <span className="block text-sm font-bold text-blue-600">搜索书籍</span>
+                <ul className="my-1 pt-1 h-[40%] w-full  overflow-y-scroll ">
+                  {searchBookRes.length === 0 ? (
+                    <span className=" block w-full text-center text-xl text-gray-500">
+                      暂无结果
+                    </span>
+                  ) : (
+                    searchBookRes?.map((item: any) => (
+                      <li
+                        key={item.id}
+                        className="flex items-center w-full h-10 cursor-pointer border-b border-solid border-gray-400"
+                      >
+                        <img src={item.album} className=" w-6 mr-2" />
+                        <span className="flex items-center w-full truncate">
+                          <span className=" text-black mr-1">{item.name}</span>--
+                          <span className=" text-gray-500 text-sm ml-1">{item.author}</span>
+                        </span>
+                      </li>
+                    ))
+                  )}
+                </ul>
+                <span className="block text-sm font-bold text-blue-600">搜索用户</span>
+                <ul className="my-1 pt-1 h-[40%]  overflow-y-scroll ">
+                  {searchUserRes.length === 0 ? (
+                    <span className=" block w-full text-center text-xl text-gray-500">
+                      暂无结果
+                    </span>
+                  ) : (
+                    searchUserRes?.map((item: any) => (
+                      <li
+                        key={item.id}
+                        className="flex items-center  h-10 cursor-pointer border-b border-solid border-gray-400"
+                      >
+                        <Avatar src={item.avatar} size={32} />
+                        <span className="flex items-center w-full truncate ml-1">
+                          <span className=" text-black mr-1">{item.username}</span>
+                        </span>
+                      </li>
+                    ))
+                  )}
+                </ul>
+              </div>
+            )}
+          </div>
           <ul className="ham-ul flex flex-col justify-between  sm:w-3/4 lg:w-1/2 xl:w-1/3 ">
             <li
               className="cursor-pointer font-bold hover:text-blue-700 transition-all"

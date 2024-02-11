@@ -14,6 +14,9 @@ const BoughtSuccess = lazy(() => import('@/views/shop/BoughtSuccess'))
 const SelfInfo = lazy(() => import('@/views/shop/SelfInfo'))
 const AddressList = lazy(() => import('@/views/shop/Address'))
 const AddressInfo = lazy(() => import('@/views/shop/Address/AddressInfo'))
+const Search = lazy(() => import('@/views/shop/Search'))
+const FriendList = lazy(() => import('@/views/shop/FriendList'))
+const UserInfo = lazy(() => import('@/views/shop/UserInfo'))
 
 const Admin = lazy(() => import('@/views/admin'))
 const DashBoard = lazy(() => import('@/views/admin/DashBoard'))
@@ -41,7 +44,10 @@ const routes: RouteObject[] = [
       { path: '/shop/boughtSuccess', element: <BoughtSuccess /> },
       { path: '/shop/selfInfo', element: <SelfInfo /> },
       { path: '/shop/addressList', element: <AddressList /> },
-      { path: '/shop/addressInfo', element: <AddressInfo /> }
+      { path: '/shop/addressInfo', element: <AddressInfo /> },
+      { path: '/shop/search', element: <Search /> },
+      { path: '/shop/friendList', element: <FriendList /> },
+      { path: '/shop/userInfo', element: <UserInfo /> }
     ]
   },
   {

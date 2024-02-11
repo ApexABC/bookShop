@@ -7,3 +7,12 @@ export const reqRegister = (data: Record<any, any>) =>
 // 用户登录
 export const reqLogin = (data: Record<any, any>) =>
   request.post({ url: '/admin/login', data: qs.stringify({ ...data }) })
+
+export const reqSearchUserByLike = (like:string)=> request.get({url:'/admin/like',params:{like}})
+
+// 关注
+export const reqFollowUser = (toUserId:number)=>request.post({url:'/admin/follow',data:qs.stringify({toUserId})})
+// 取消关注
+export const reqCancelFollowUser = (toUserId:number)=>request.delete({url:'/admin/follow',data:qs.stringify({toUserId})})
+// 获得好友关系
+export const reqUserRelation = () =>request.get({url:'/admin/relation'})

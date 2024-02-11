@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react'
+import React, { memo } from 'react'
 import type { FC, ReactNode } from 'react'
 import { Rate, message, Badge } from 'antd'
 import {
@@ -69,7 +69,7 @@ const BookInfo: FC<IProps> = ({ bookInfo }) => {
           <div className="flex justify-between w-full px-10 mt-3">
             <Badge count={totalCount}>
               <button className="w-28 h-10 bg-yellow-300 font-medium" onClick={handleAddCart}>
-                添加购物车
+                加入购物车
               </button>
             </Badge>
 
@@ -102,13 +102,16 @@ const BookInfo: FC<IProps> = ({ bookInfo }) => {
                   placeholder="1"
                 /> */}
                 <Badge count={totalCount}>
-                  <button className="h-10 w-40 bg-[#ffca42] cursor-pointer" onClick={handleAddCart}>
+                  <button
+                    className="h-10 w-40 bg-yellow-400 hover:bg-yellow-300 cursor-pointer"
+                    onClick={handleAddCart}
+                  >
                     加入购物车
                   </button>
                 </Badge>
                 <button
                   onClick={handleImmediateBuy}
-                  className="w-40 h-10 ml-5 bg-red-500 text-white font-medium"
+                  className="w-40 h-10 ml-5 bg-red-500 hover:bg-red-400 text-white font-medium cursor-pointer"
                 >
                   立即购买
                 </button>

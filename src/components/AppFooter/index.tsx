@@ -71,7 +71,7 @@ const AppFooter: FC<IProps> = (props) => {
         </div>
         <div>
           <span style={colorTextStyles} className={textClass}>
-            部署：Docker、Nginx
+            部署：Nginx
           </span>
           {/* <span style={colorTextStyles} className={textClass}>
             部署：
