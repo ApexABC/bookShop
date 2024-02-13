@@ -5,6 +5,7 @@ import adminBook from './modules/adminBook'
 import rank from './modules/rank'
 import user from './modules/user'
 import order from './modules/order'
+import chat from './modules/chat'
 const store = configureStore({
   reducer: {
     user,
@@ -12,7 +13,8 @@ const store = configureStore({
 
     adminBook,
     rank,
-    order
+    order,
+    chat
   }
 })
 

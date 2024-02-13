@@ -138,7 +138,12 @@ const AppHeader: FC<IProps> = (props) => {
             >
               订单
             </li>
-            <li className="cursor-pointer font-bold hover:text-blue-700 transition-all">消息</li>
+            <li
+              className="cursor-pointer font-bold hover:text-blue-700 transition-all"
+              onClick={(e) => navigate('/shop/chat')}
+            >
+              消息
+            </li>
             <li
               className={classNames('cursor-pointer font-bold hover:text-blue-700 transition-all', {
                 'text-[#1d4ed8]': curPathName === '/shop/selfInfo'

@@ -17,6 +17,7 @@ const AddressInfo = lazy(() => import('@/views/shop/Address/AddressInfo'))
 const Search = lazy(() => import('@/views/shop/Search'))
 const FriendList = lazy(() => import('@/views/shop/FriendList'))
 const UserInfo = lazy(() => import('@/views/shop/UserInfo'))
+const Chat = lazy(() => import('@/views/shop/Chat'))
 
 const Admin = lazy(() => import('@/views/admin'))
 const DashBoard = lazy(() => import('@/views/admin/DashBoard'))
@@ -47,7 +48,8 @@ const routes: RouteObject[] = [
       { path: '/shop/addressInfo', element: <AddressInfo /> },
       { path: '/shop/search', element: <Search /> },
       { path: '/shop/friendList', element: <FriendList /> },
-      { path: '/shop/userInfo', element: <UserInfo /> }
+      { path: '/shop/userInfo', element: <UserInfo /> },
+      { path: '/shop/chat', element: <Chat /> }
     ]
   },
   {
