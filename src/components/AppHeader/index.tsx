@@ -2,7 +2,7 @@ import React, { memo, useEffect, useState, useCallback } from 'react'
 import type { FC, ReactNode } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { AppHeaderWrapper } from './style'
-import { Avatar, Dropdown } from 'antd'
+import { Avatar, Dropdown, Badge } from 'antd'
 import type { MenuProps } from 'antd'
 import classNames from 'classnames'
 import { CSSTransition } from 'react-transition-group'
@@ -23,10 +23,11 @@ interface IProps {
 const AppHeader: FC<IProps> = (props) => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const { userInfoStore, curPathName } = useAppSelector(
+  const { userInfoStore, curPathName, curChatList } = useAppSelector(
     (state) => ({
       userInfoStore: state.user.userInfo,
-      curPathName: state.user.curPathName
+      curPathName: state.user.curPathName,
+      curChatList: state.chat.chatList
     }),
     shallowEqualApp
   )
@@ -44,6 +45,12 @@ const AppHeader: FC<IProps> = (props) => {
       label: <NavLink to={'/admin'}>后台管理</NavLink>
     }
   ])
+  const [curUnReadNum, setCurUnReadNum] = useState(0)
+  // 未读消息
+  useEffect(() => {
+    const unReadNum = curChatList.reduce((per, cur) => per + cur.unRead, 0)
+    setCurUnReadNum(unReadNum)
+  }, [curChatList])
   useEffect(() => {
     window.addEventListener('scroll', (e) => {
       if (window.scrollY !== 0) {
@@ -112,21 +119,38 @@ const AppHeader: FC<IProps> = (props) => {
     } = await searchBook(val)
     serSearchBookRes(bookList)
   }
-  function goSearchPage() {
+  function reset() {
     setSearchInputVal('')
+    setIsHamburOpen(false)
+  }
+  function goSearchPage() {
+    reset()
     navigate('/shop/search', { state: { searchVal: searchInputVal } })
+  }
+  function handleGoOtherPage(pageRoute: string) {
+    reset()
+    navigate(pageRoute)
+  }
+  function goBookDetailPage(item: any) {
+    reset()
+    navigate('/shop/bookDetail', { state: { curBookId: item.id } })
+  }
+  function goToOtherUserPage(item: any) {
+    reset()
+    if (item.id === userInfoStore.id) return navigate('/shop/selfInfo')
+    navigate('/shop/userInfo', { state: { otherUserId: item.id } })
   }
   return (
     <AppHeaderWrapper $isScrollAtTop={isScrollAtTop}>
       <div className="flex justify-start items-center min-h-20 sm:justify-between ">
         <Logo></Logo>
         <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-start">
-          <ul className="flex justify-between ml-6  sm:w-3/4 lg:w-1/2 xl:w-1/3 ">
+          <ul className="flex items-center justify-between ml-6  sm:w-3/4 lg:w-1/2 xl:w-1/3 ">
             <li
               className={classNames('cursor-pointer font-bold hover:text-blue-700 transition-all', {
                 'text-[#1d4ed8]': curPathName === '/shop/car'
               })}
-              onClick={(e) => navigate('/shop/car')}
+              onClick={(e) => handleGoOtherPage('/shop/car')}
             >
               购物车
             </li>
@@ -134,21 +158,29 @@ const AppHeader: FC<IProps> = (props) => {
               className={classNames('cursor-pointer font-bold hover:text-blue-700 transition-all', {
                 'text-[#1d4ed8]': curPathName === '/shop/order'
               })}
-              onClick={(e) => navigate('/shop/order')}
+              onClick={(e) => handleGoOtherPage('/shop/order')}
             >
               订单
             </li>
             <li
-              className="cursor-pointer font-bold hover:text-blue-700 transition-all"
-              onClick={(e) => navigate('/shop/chat')}
+              className={`cursor-pointer transition-all hover:text-blue-700 `}
+              onClick={(e) => handleGoOtherPage('/shop/chat')}
             >
-              消息
+              <Badge count={curUnReadNum} size="small" offset={[8, 0]}>
+                <span
+                  className={`font-bold text-base hover:text-blue-700 ${
+                    curPathName === '/shop/chat' && 'text-[#1d4ed8]'
+                  }`}
+                >
+                  消息
+                </span>
+              </Badge>
             </li>
             <li
               className={classNames('cursor-pointer font-bold hover:text-blue-700 transition-all', {
                 'text-[#1d4ed8]': curPathName === '/shop/selfInfo'
               })}
-              onClick={(e) => navigate('/shop/selfInfo')}
+              onClick={(e) => handleGoOtherPage('/shop/selfInfo')}
             >
               个人信息
             </li>
@@ -183,6 +215,7 @@ const AppHeader: FC<IProps> = (props) => {
                   ) : (
                     searchBookRes?.map((item: any) => (
                       <li
+                        onClick={(e) => goBookDetailPage(item)}
                         key={item.id}
                         className="flex items-center w-full h-10 cursor-pointer border-b border-solid border-gray-400"
                       >
@@ -204,6 +237,7 @@ const AppHeader: FC<IProps> = (props) => {
                   ) : (
                     searchUserRes?.map((item: any) => (
                       <li
+                        onClick={(e) => goToOtherUserPage(item)}
                         key={item.id}
                         className="flex items-center  h-10 cursor-pointer border-b border-solid border-gray-400"
                       >
@@ -234,8 +268,20 @@ const AppHeader: FC<IProps> = (props) => {
             </span>
           )}
         </div>
-        <div className={hamburBtn} onClick={(e) => setIsHamburOpen(!isHamburOpen)}>
-          {isHamburOpen ? <Svg name="关闭" size={40}></Svg> : <Svg name="汉堡菜单" size={40}></Svg>}
+        <div
+          className={hamburBtn}
+          onClick={(e) => {
+            setIsHamburOpen(!isHamburOpen)
+            setSearchInputVal('')
+          }}
+        >
+          {isHamburOpen ? (
+            <Svg name="关闭" size={40}></Svg>
+          ) : (
+            <Badge count={curUnReadNum} size="small" offset={[-10, 3]}>
+              <Svg name="汉堡菜单" size={40}></Svg>
+            </Badge>
+          )}
         </div>
       </div>
       <CSSTransition in={isHamburOpen} unmountOnExit={true} classNames="hambur" timeout={300}>
@@ -275,6 +321,7 @@ const AppHeader: FC<IProps> = (props) => {
                   ) : (
                     searchBookRes?.map((item: any) => (
                       <li
+                        onClick={(e) => goBookDetailPage(item)}
                         key={item.id}
                         className="flex items-center w-full h-10 cursor-pointer border-b border-solid border-gray-400"
                       >
@@ -296,6 +343,7 @@ const AppHeader: FC<IProps> = (props) => {
                   ) : (
                     searchUserRes?.map((item: any) => (
                       <li
+                        onClick={(e) => goToOtherUserPage(item)}
                         key={item.id}
                         className="flex items-center  h-10 cursor-pointer border-b border-solid border-gray-400"
                       >
@@ -312,14 +360,43 @@ const AppHeader: FC<IProps> = (props) => {
           </div>
           <ul className="ham-ul flex flex-col justify-between  sm:w-3/4 lg:w-1/2 xl:w-1/3 ">
             <li
-              className="cursor-pointer font-bold hover:text-blue-700 transition-all"
-              onClick={(e) => navigate('/shop/car')}
+              className={classNames('cursor-pointer font-bold hover:text-blue-700 transition-all', {
+                'text-[#1d4ed8]': curPathName === '/shop/car'
+              })}
+              onClick={(e) => handleGoOtherPage('/shop/car')}
             >
               购物车
             </li>
-            <li className="cursor-pointer font-bold hover:text-blue-700 transition-all">订单</li>
-            <li className="cursor-pointer font-bold hover:text-blue-700 transition-all">消息</li>
-            <li className="cursor-pointer font-bold hover:text-blue-700 transition-all">
+            <li
+              className={classNames('cursor-pointer font-bold hover:text-blue-700 transition-all', {
+                'text-[#1d4ed8]': curPathName === '/shop/order'
+              })}
+              onClick={(e) => handleGoOtherPage('/shop/order')}
+            >
+              订单
+            </li>
+
+            <li
+              className={`cursor-pointer transition-all hover:text-blue-700 `}
+              onClick={(e) => handleGoOtherPage('/shop/chat')}
+            >
+              <Badge count={curUnReadNum} size="small" offset={[8, 0]}>
+                <span
+                  className={`font-bold text-base hover:text-blue-700 ${
+                    curPathName === '/shop/chat' && 'text-[#1d4ed8]'
+                  }`}
+                >
+                  消息
+                </span>
+              </Badge>
+            </li>
+
+            <li
+              className={classNames('cursor-pointer font-bold hover:text-blue-700 transition-all', {
+                'text-[#1d4ed8]': curPathName === '/shop/selfInfo'
+              })}
+              onClick={(e) => handleGoOtherPage('/shop/selfInfo')}
+            >
               个人信息
             </li>
           </ul>

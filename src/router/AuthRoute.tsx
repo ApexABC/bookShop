@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { reqVerifyToken } from '@/service/modules/user'
 import { useAppDispatch } from '@/store'
 import { setCurPathName, setUserInfo } from '@/store/modules/user'
+import { message } from 'antd'
 const allowNoTokenPath = [
   '/shop',
   '/shop/home',
@@ -21,11 +22,23 @@ const AuthRoute = (props?: any) => {
     dispatch(setCurPathName(location.pathname))
     // console.log(location.pathname)
     if (allowNoTokenPath.includes(location.pathname)) return
-    testToken()
+    testToken(location.pathname)
   }, [location.pathname])
-  async function testToken() {
-    const { code } = await reqVerifyToken()
+  const adminCanPath = [
+    '/admin',
+    '/admin/dashBoard',
+    '/admin/order',
+    '/admin/book',
+    '/admin/rank',
+    '/admin/sort'
+  ]
+  async function testToken(path: string) {
+    const { code, userInfo } = await reqVerifyToken()
     if (code === 401 || !token) navigate('/login')
+    if (adminCanPath.includes(path) && userInfo.type !== 'root') {
+      navigate('/shop')
+      message.warning('您不是管理员')
+    }
   }
   useEffect(() => {
     getUserInfo()

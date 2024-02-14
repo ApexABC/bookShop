@@ -65,7 +65,9 @@ const BookInfo: FC<IProps> = ({ bookInfo }) => {
             <Rate value={bookInfo.rate / 2} disabled allowHalf style={{ fontSize: 14 }} />
             <span className="ml-1">{bookInfo.rate}</span>
           </div>
-          <div className="mt-4 px-6 text-sm text-[#818285] line-clamp-4">{bookInfo.describe}</div>
+          <div className="mt-4 h-24 mx-6 text-sm text-[#818285] overflow-y-auto">
+            {bookInfo.describe}
+          </div>
           <div className="flex justify-between w-full px-10 mt-3">
             <Badge count={totalCount}>
               <button className="w-28 h-10 bg-yellow-300 font-medium" onClick={handleAddCart}>
@@ -91,7 +93,7 @@ const BookInfo: FC<IProps> = ({ bookInfo }) => {
               <span className="block mt-1 text-xl text-[#ffca42] font-bold">
                 ￥{bookInfo.price}
               </span>
-              <div className="mt-6 line-clamp-6 text-[#969aa0]">{bookInfo.describe}</div>
+              <div className="mt-6 h-24 overflow-y-auto text-[#969aa0]">{bookInfo.describe}</div>
               <div className="mt-5 text-[#969aa0]">出版社：{bookInfo.publisher}</div>
               <div className="mt-5 text-[#969aa0]">发布时间：{bookInfo.pubtime}</div>
               <div className="absolute flex items-center justify-start bottom-6">

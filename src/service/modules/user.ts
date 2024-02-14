@@ -16,3 +16,5 @@ export const reqFollowUser = (toUserId:number)=>request.post({url:'/admin/follow
 export const reqCancelFollowUser = (toUserId:number)=>request.delete({url:'/admin/follow',data:qs.stringify({toUserId})})
 // 获得好友关系
 export const reqUserRelation = () =>request.get({url:'/admin/relation'})
+// 获取他人信息
+export const reqOtherUserInfo = (userId:number)=>request.get({url:'/admin/getOtherUserInfo',params:{userId}})

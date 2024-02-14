@@ -5,6 +5,7 @@ import { reqRankBookListById } from '@/service/modules/rank'
 import Svg from '@/components/Svg'
 import { formatRate } from '@/utils/formatDate'
 import AppFooter from '@/components/AppFooter'
+import { Spin } from 'antd'
 interface IProps {
   children?: ReactNode
 }
@@ -14,13 +15,16 @@ const RankList: FC<IProps> = (props) => {
   const navigate = useNavigate()
   const { title, rankId } = location.state
   const [rankBookList, setRankBookList] = useState<any[]>()
+  const [isSpinning, setIsSpinning] = useState(false)
   useEffect(() => {
+    setIsSpinning(true)
     // window.scrollTo(0, 0)
     getRankBookList()
   }, [])
   async function getRankBookList() {
     const { data } = await reqRankBookListById(rankId)
     setRankBookList(data.bookList)
+    setIsSpinning(false)
   }
   function rankColor(index: number, font = false): string {
     if (index === 0) return '#f75c03'
@@ -30,6 +34,7 @@ const RankList: FC<IProps> = (props) => {
   }
   return (
     <div>
+      <Spin spinning={isSpinning} fullscreen />
       <h1 className="text-3xl font-bold ml-6 pt-5 mb-5">{title}</h1>
       <div className="mb-2 grid gap-1 lg:grid-cols-2 px-2">
         {rankBookList?.map((item, index) => (
