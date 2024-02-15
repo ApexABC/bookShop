@@ -10,7 +10,7 @@ import Logo from '../logo'
 import Svg from '../Svg'
 import { verifyTokenPass } from '@/utils/verifyToken'
 import { shallowEqualApp, useAppDispatch, useAppSelector } from '@/store'
-import { setUserInfo } from '@/store/modules/user'
+import { setHumberIsOpen, setUserInfo } from '@/store/modules/user'
 import { reqCartTotalCount, reqCartList } from '@/service/modules/order'
 import { setCartCount, setCartList } from '@/store/modules/order'
 import debounce from 'lodash/debounce'
@@ -31,7 +31,7 @@ const AppHeader: FC<IProps> = (props) => {
     }),
     shallowEqualApp
   )
-  const [curItems, setCurItems] = useState<MenuProps['items']>([
+  const list = [
     {
       key: '1',
       label: <span>Hi! {userInfoStore?.username}</span>
@@ -44,7 +44,8 @@ const AppHeader: FC<IProps> = (props) => {
       key: '3',
       label: <NavLink to={'/admin'}>后台管理</NavLink>
     }
-  ])
+  ]
+  const [curItems, setCurItems] = useState<MenuProps['items']>([...list])
   const [curUnReadNum, setCurUnReadNum] = useState(0)
   // 未读消息
   useEffect(() => {
@@ -52,29 +53,33 @@ const AppHeader: FC<IProps> = (props) => {
     setCurUnReadNum(unReadNum)
   }, [curChatList])
   useEffect(() => {
-    window.addEventListener('scroll', (e) => {
-      if (window.scrollY !== 0) {
-        setIsScrollAtTop(false)
-      } else {
-        setIsScrollAtTop(true)
-      }
-    })
-    testToken()
+    if (!curItems) return
+    const myCurItems = [...list]
+    myCurItems[0] = {
+      key: '1',
+      label: <span>Hi! {userInfoStore?.username}</span>
+    }
     if (userInfoStore?.type !== 'root') {
       // 判断是否为超管显示下拉菜单内容
-      curItems?.pop()
-      setCurItems(curItems)
+      myCurItems?.pop()
     }
+    setCurItems(myCurItems)
+  }, [userInfoStore])
+  function isAtTop() {
+    if (window.scrollY !== 0) {
+      setIsScrollAtTop(false)
+    } else {
+      setIsScrollAtTop(true)
+    }
+  }
+  useEffect(() => {
+    window.addEventListener('scroll', isAtTop)
+    testToken()
     return () => {
-      window.removeEventListener('scroll', (e) => {
-        if (window.scrollY !== 0) {
-          setIsScrollAtTop(false)
-        } else {
-          setIsScrollAtTop(true)
-        }
-      })
+      window.removeEventListener('scroll', isAtTop)
     }
   }, [])
+
   function handleLoginOut() {
     localStorage.removeItem('token')
     navigate('/login')
@@ -96,10 +101,13 @@ const AppHeader: FC<IProps> = (props) => {
     dispatch(setCartCount(count))
   }
   const [isScrollAtTop, setIsScrollAtTop] = useState(true)
-  const [isHamburOpen, setIsHamburOpen] = useState(false)
+  const [isHumburOpen, setIsHumburOpen] = useState(false)
+  useEffect(() => {
+    dispatch(setHumberIsOpen(isHumburOpen))
+  }, [isHumburOpen])
   const hamburBtn = classNames('sm:hidden', 'w-11', 'flex', 'justify-center', 'box-border', {
-    'shadow-inner': isHamburOpen,
-    'shadow-blue-500/50': isHamburOpen
+    'shadow-inner': isHumburOpen,
+    'shadow-blue-500/50': isHumburOpen
   })
   const [searchInputVal, setSearchInputVal] = useState('')
   const [searchUserRes, setSearchUserRes] = useState([])
@@ -121,7 +129,7 @@ const AppHeader: FC<IProps> = (props) => {
   }
   function reset() {
     setSearchInputVal('')
-    setIsHamburOpen(false)
+    setIsHumburOpen(false)
   }
   function goSearchPage() {
     reset()
@@ -260,7 +268,7 @@ const AppHeader: FC<IProps> = (props) => {
               trigger={['click', 'hover']}
               placement="bottomLeft"
             >
-              <Avatar size="large" src={userInfo.avatar} />
+              <Avatar size="large" src={userInfoStore.avatar} />
             </Dropdown>
           ) : (
             <span className="text-[#1e4aed] cursor-pointer" onClick={(e) => navigate('/login')}>
@@ -271,11 +279,11 @@ const AppHeader: FC<IProps> = (props) => {
         <div
           className={hamburBtn}
           onClick={(e) => {
-            setIsHamburOpen(!isHamburOpen)
+            setIsHumburOpen(!isHumburOpen)
             setSearchInputVal('')
           }}
         >
-          {isHamburOpen ? (
+          {isHumburOpen ? (
             <Svg name="关闭" size={40}></Svg>
           ) : (
             <Badge count={curUnReadNum} size="small" offset={[-10, 3]}>
@@ -284,12 +292,14 @@ const AppHeader: FC<IProps> = (props) => {
           )}
         </div>
       </div>
-      <CSSTransition in={isHamburOpen} unmountOnExit={true} classNames="hambur" timeout={300}>
+      <CSSTransition in={isHumburOpen} unmountOnExit={true} classNames="hambur" timeout={300}>
         <div
           className={classNames(
-            'flex flex-col bg-white items-center justify-around h-52  w-full sm:hidden'
+            'flex flex-col bg-white items-center z-20 justify-around h-52 w-full sm:hidden'
           )}
-          style={{ backgroundColor: 'rgba(255,255,255,0.8)', borderTop: '1px solid #ccc' }}
+          style={{
+            borderTop: '1px solid #ccc'
+          }}
         >
           <div
             className="absolute top-[88px] right-[13%] cursor-pointer z-10"

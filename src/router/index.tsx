@@ -25,6 +25,8 @@ const Book = lazy(() => import('@/views/admin/Book'))
 const Rank = lazy(() => import('@/views/admin/Rank'))
 const Sort = lazy(() => import('@/views/admin/Sort'))
 const OrderAdmin = lazy(() => import('@/views/admin/Order'))
+
+const NotFound = lazy(() => import('@/views/404'))
 const routes: RouteObject[] = [
   {
     path: '/',
@@ -55,6 +57,10 @@ const routes: RouteObject[] = [
   {
     path: '/login',
     element: <Login />
+  },
+  {
+    path: '*',
+    element: <NotFound />
   },
   {
     path: '/admin',

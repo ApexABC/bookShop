@@ -167,7 +167,7 @@ const BookComment: FC<IProps> = ({ commentList, curBookId, fetchBookInfo }) => {
                 <span className="mr-3 text-pink-400">{item.username}</span>
                 <span className="text-sm text-gray-400">{formatUtc(item.createTime)}</span>
               </div>
-              <span className="mt-4">{item.comment}</span>
+              <span className="mt-4 leading-5">{item.comment}</span>
               <div className="flex items-center mt-3 h-4">
                 <div
                   className="flex items-center cursor-pointer hover:bg-pink-200"
@@ -245,7 +245,7 @@ const BookComment: FC<IProps> = ({ commentList, curBookId, fetchBookInfo }) => {
                       <span>
                         回复<span className="text-blue-700">@{itemChildren.quote}</span>:
                       </span>
-                      <span className="ml-2">{itemChildren.comment}</span>
+                      <span className="ml-2 leading-5">{itemChildren.comment}</span>
                     </div>
                     <div className="flex items-center mt-3 h-4">
                       <div

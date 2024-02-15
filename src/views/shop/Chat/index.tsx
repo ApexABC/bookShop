@@ -9,22 +9,28 @@ import Svg from '@/components/Svg'
 interface IProps {
   children?: ReactNode
 }
-
 const Chat: FC<IProps> = (props) => {
   const socketClient = useContext(SocketContext)
-  const { chatList, userInfo } = useAppSelector(
+  const { chatList, userInfo, humberIsOpen } = useAppSelector(
     (state) => ({
       chatList: state.chat.chatList,
-      userInfo: state.user.userInfo
+      userInfo: state.user.userInfo,
+      humberIsOpen: state.user.humberIsOpen
     }),
     shallowEqualApp
   )
+  useEffect(() => {
+    if (humberIsOpen) setIsShowAside(false)
+  }, [humberIsOpen])
   const chatListRef = useRef<HTMLDivElement | null>(null)
   useEffect(() => {
     const myChatList = [...chatList]
     arraySortByTime(myChatList, 'updateTime')
     setCurChatList(myChatList)
-    if (window.innerWidth < 640) return // 如果是移动端那就不默认选择聊天让用户自己选
+    if (window.innerWidth < 640) {
+      setIsShowAside(true)
+      return
+    } // 如果是移动端那就不默认选择聊天让用户自己选
     setCurChatTarget(myChatList[0])
   }, [chatList])
   useLayoutEffect(() => {
@@ -88,12 +94,12 @@ const Chat: FC<IProps> = (props) => {
   }
   const [isShowAside, setIsShowAside] = useState(true)
   return (
-    <div className="w-full  overflow-hidden flex items-center justify-center">
-      <div className="relative w-full h-[88vh] sm:w-[90%] sm:grid sm:grid-cols-10 bg-white rounded-md border border-solid border-gray-300">
+    <div className="w-full  overflow-hidden flex items-center justify-center ">
+      <div className="relative w-full h-[88vh] sm:w-[90%] sm:grid sm:grid-cols-10 bg-white rounded-md overflow-hidden">
         <aside
           className={`absolute sm:static w-full sm:w-auto sm:translate-x-0 ${
             !isShowAside && '-translate-x-full'
-          } h-[88vh] bg-white transition-all duration-300  z-10 sm:col-span-3 lg:col-span-2  border-l-0  border-y-0 border-r border-solid border-gray-400`}
+          } h-[88vh] bg-white transition-all duration-300  z-10 sm:col-span-3 lg:col-span-2  border-l-0  border-y-0 border-r border-solid border-gray-300`}
         >
           <header className="relative h-[6%] w-full flex justify-center items-center text-gray-400 bg-white border-b border-x-0 border-t-0 border-solid border-gray-300">
             最近消息
@@ -104,7 +110,7 @@ const Chat: FC<IProps> = (props) => {
               <Svg name="收起" size={20} color="#000"></Svg>
             </div>
           </header>
-          <div className="h-[94%] overflow-y-auto">
+          <div className="h-[94%] overflow-y-auto w-full">
             {curChatList &&
               curChatList?.map((item) => (
                 <div
@@ -114,10 +120,10 @@ const Chat: FC<IProps> = (props) => {
                   } cursor-pointer border-b border-solid border-gray-300 `}
                   onClick={(e) => handleTargetUserClick(item)}
                 >
-                  <div className="w-[20%]">
+                  <div className="w-[50px] mr-2">
                     <Avatar src={item.targetUserAvatar} size={45}></Avatar>
                   </div>
-                  <div className="ml-4 w-[80%] relative flex flex-col ">
+                  <div className="w-[70%] relative flex flex-col ">
                     <h1 className="w-full text-xl truncate">{item.targetUserName}</h1>
                     <span className="w-full text-xs text-gray-500 truncate">
                       {item.messageList[item.messageList.length - 1].message}
@@ -152,7 +158,7 @@ const Chat: FC<IProps> = (props) => {
                 {item.fromUserId === userInfo.id ? (
                   <div className="w-full flex items-start justify-end">
                     {/* 自己发的在右边 */}
-                    <div className="max-w-[80%] p-2 mr-2 bg-pink-200 rounded-md">
+                    <div className="max-w-[80%] leading-6 p-2 mr-2 bg-pink-200 rounded-md">
                       <span className="w-full ">{item.message}</span>
                     </div>
                     <div>
@@ -164,7 +170,7 @@ const Chat: FC<IProps> = (props) => {
                     <div>
                       <Avatar src={curChatTarget.targetUserAvatar} size={35}></Avatar>
                     </div>
-                    <div className="max-w-[80%] p-2 ml-2 bg-white rounded-md break-words">
+                    <div className="max-w-[80%] leading-6 p-2 ml-2 bg-white rounded-md break-words">
                       <span className="w-full">{item.message}</span>
                     </div>
                   </div>

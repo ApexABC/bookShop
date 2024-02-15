@@ -27,11 +27,11 @@ const Shop: FC<IProps> = (props) => {
     })
     // socketClient.connect()
     socketClient.on('initMsg', (info) => {
-      console.log(info)
+      // console.log(info)
       dispatch(setChatList(info))
     })
     socketClient.on(String(userInfo.id), (info) => {
-      console.log('返回的', info)
+      // console.log('返回的', info)
       dispatch(setChatList(info))
     })
   }

@@ -37,7 +37,8 @@ const SubOrder: FC<IProps> = (props) => {
   }
   const [isSpinning, setIsSpinning] = useState(false)
   async function handleSubOrder() {
-    if (Object.keys(checkedItemList).length === 0) message.warning('请添加收货地址')
+    if (curDefaultAddress === undefined || Object.keys(curDefaultAddress)?.length === 0)
+      return message.warning('请添加收货地址')
     setIsSpinning(true)
     const goods = checkedItemList.map((item: any) => ({
       cartId: item.id,

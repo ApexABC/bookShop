@@ -60,21 +60,22 @@ const BookInfo: FC<IProps> = ({ bookInfo }) => {
             <img className="w-52 h-80 shadow-xl" src={bookInfo.album} />
           </div>
           <h1 className="text-2xl mt-3 font-bold">{bookInfo.name}</h1>
-          <span className="mt-1 text-sm text-[#818285]">{bookInfo.author}</span>
+          <span className="mt-1 text-sm text-gray-600 ">{bookInfo.author}</span>
           <div className="mt-1">
             <Rate value={bookInfo.rate / 2} disabled allowHalf style={{ fontSize: 14 }} />
             <span className="ml-1">{bookInfo.rate}</span>
           </div>
-          <div className="mt-4 h-24 mx-6 text-sm text-[#818285] overflow-y-auto">
+          <div className="mt-4 h-24 mx-6 text-sm text-gray-600 overflow-y-auto">
             {bookInfo.describe}
           </div>
-          <div className="flex justify-between w-full px-10 mt-3">
+
+          <div className="flex justify-between items-center w-full px-10 mt-3">
             <Badge count={totalCount}>
               <button className="w-28 h-10 bg-yellow-300 font-medium" onClick={handleAddCart}>
                 加入购物车
               </button>
             </Badge>
-
+            <span className="block mt-1 text-base text-pink-500 font-bold">￥{bookInfo.price}</span>
             <button
               onClick={handleImmediateBuy}
               className="w-28 h-10 bg-red-500 text-white font-medium"
@@ -90,12 +91,10 @@ const BookInfo: FC<IProps> = ({ bookInfo }) => {
             </div>
             <div className="w-1/2  relative">
               <h1 className="pt-2 text-2xl text-[#1b3764]">{bookInfo.name}</h1>
-              <span className="block mt-1 text-xl text-[#ffca42] font-bold">
-                ￥{bookInfo.price}
-              </span>
-              <div className="mt-6 h-24 overflow-y-auto text-[#969aa0]">{bookInfo.describe}</div>
-              <div className="mt-5 text-[#969aa0]">出版社：{bookInfo.publisher}</div>
-              <div className="mt-5 text-[#969aa0]">发布时间：{bookInfo.pubtime}</div>
+              <span className="block mt-1 text-xl text-red-400 font-bold">￥{bookInfo.price}</span>
+              <div className="mt-6 h-24 overflow-y-auto text-gray-600">{bookInfo.describe}</div>
+              <div className="mt-5 text-gray-600 ">出版社：{bookInfo.publisher}</div>
+              <div className="mt-5 text-gray-600 ">发布时间：{bookInfo.pubtime}</div>
               <div className="absolute flex items-center justify-start bottom-6">
                 {/* <input
                   style={{ border: 'solid 2px #ffca42' }}
