@@ -27,6 +27,7 @@ const BookComment: FC<IProps> = ({ commentList, curBookId, fetchBookInfo }) => {
   const [curCommentVal, setCurCommentVal] = useState<string>()
   async function handlePubComment() {
     if (!curCommentVal) return
+    if (curCommentVal.length >= 4000) return message.warning('评论字数不能大于四千')
     const { code } = await reqAddBookComment({
       bookId: curBookId,
       comment: curCommentVal
