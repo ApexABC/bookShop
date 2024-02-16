@@ -5,7 +5,7 @@ import type { FC, ReactNode } from 'react'
 import { formatUtc, arraySortByTime } from '@/utils/formatDate'
 import SocketContext from '@/socket/socketContext'
 import Svg from '@/components/Svg'
-
+let isFirst = true
 interface IProps {
   children?: ReactNode
 }
@@ -22,15 +22,21 @@ const Chat: FC<IProps> = (props) => {
   useEffect(() => {
     if (humberIsOpen) setIsShowAside(false)
   }, [humberIsOpen])
+  useEffect(() => {
+    if (window.innerWidth < 640) {
+      setIsShowAside(true)
+      return
+    } // 如果是移动端那就不默认选择聊天让用户自己选
+  }, [])
   const chatListRef = useRef<HTMLDivElement | null>(null)
   useEffect(() => {
     const myChatList = [...chatList]
     arraySortByTime(myChatList, 'updateTime')
     setCurChatList(myChatList)
-    if (window.innerWidth < 640) {
-      setIsShowAside(true)
-      return
-    } // 如果是移动端那就不默认选择聊天让用户自己选
+    if (isFirst) {
+      isFirst = false
+      if (window.innerWidth < 640) return
+    }
     setCurChatTarget(myChatList[0])
   }, [chatList])
   useLayoutEffect(() => {
@@ -64,7 +70,9 @@ const Chat: FC<IProps> = (props) => {
     }
   }, [curChatTarget])
   function handleTargetUserClick(item: any) {
-    if (window.innerWidth < 640) setIsShowAside(false)
+    if (window.innerWidth < 640) {
+      setIsShowAside(false)
+    }
     setCurChatTarget(item)
   }
   const [curInputVal, setCurInputVal] = useState('')
@@ -179,11 +187,11 @@ const Chat: FC<IProps> = (props) => {
             ))}
           </div>
           <div className=" h-[24%] pt-2 pb-2 border-t border-x-0 border-b-0 border-solid border-gray-300">
-            <div className="h-[10%] pl-3 text-xs text-start text-gray-500">聊天输入⬇</div>
+            <div className="h-[10%] pl-3 mb-2 text-xs text-start text-gray-500">聊天输入⬇</div>
             <div
               contentEditable="plaintext-only"
               aria-placeholder="聊天在这里输入"
-              className="h-[70%] px-3 text-lg outline-none overflow-y-auto"
+              className="h-[60%] px-3 text-lg outline-none overflow-y-auto"
               ref={divInputRef}
               onInput={(e) => handleChatMsg(e)}
               onKeyUp={(e) => handleChatInput(e)}
@@ -198,8 +206,8 @@ const Chat: FC<IProps> = (props) => {
               </span>
               <div
                 onClick={sentChatMsg}
-                className={`w-20 h-full flex items-center justify-center cursor-pointer select-none bg-white ${
-                  curInputValLength < 1000 && curInputValLength > 0 && 'bg-blue-400  text-white'
+                className={`w-20 h-full flex items-center justify-center cursor-pointer select-none  ${
+                  curInputValLength > 0 ? 'bg-blue-400 text-white' : ''
                 }  border border-solid border-gray-300`}
               >
                 发送
