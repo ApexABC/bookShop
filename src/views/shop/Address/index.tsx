@@ -1,6 +1,6 @@
 import Svg from '@/components/Svg'
 import { reqAddressList, reqDeleteAddress } from '@/service/modules/order'
-import React, { memo, useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import type { FC, ReactNode } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Modal, message } from 'antd'

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { reqVerifyToken } from '@/service/modules/user'
 import { useAppDispatch } from '@/store'

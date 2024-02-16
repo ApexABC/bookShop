@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import type { FC, ReactNode } from 'react'
 import { Card, Col, Row, Statistic } from 'antd'
 import ECharts from '@/components/ECharts'

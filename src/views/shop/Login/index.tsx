@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react'
+import { memo, useState } from 'react'
 import type { FC, ReactNode, ChangeEvent, KeyboardEvent } from 'react'
 import { useAppDispatch } from '@/store'
 import { useNavigate } from 'react-router-dom'

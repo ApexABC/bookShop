@@ -3,7 +3,7 @@ import { reqCartList, reqDeleteCart, reqCartTotalCount } from '@/service/modules
 import { useAppDispatch } from '@/store'
 import { setCartCount, setCartList as setCartListStore } from '@/store/modules/order'
 import { Checkbox, Modal, message } from 'antd'
-import React, { memo, useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import type { FC, ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 

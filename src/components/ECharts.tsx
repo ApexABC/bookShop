@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react'
+import { memo, useEffect } from 'react'
 import type { FC, ReactNode } from 'react'
 import * as echarts from 'echarts'
 import type { BarSeriesOption, PieSeriesOption } from 'echarts/charts'

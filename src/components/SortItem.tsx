@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import { memo } from 'react'
 import type { FC, ReactNode } from 'react'
 import Svg from './Svg'
 import { useNavigate } from 'react-router-dom'

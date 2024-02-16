@@ -1,5 +1,5 @@
 import React, { forwardRef, useState, useImperativeHandle, Ref } from 'react'
-import type { FC, ReactNode } from 'react'
+import type { ReactNode } from 'react'
 import { Modal, Form, Input, message, Row, Col } from 'antd'
 import UploadImg from '@/components/uploadImg'
 import { addBook } from '@/service/modules/book'

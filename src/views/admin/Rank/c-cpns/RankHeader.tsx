@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import type { FC, ReactNode } from 'react'
 import { Select, Divider, Space, Button, Input, Modal, message } from 'antd'
 import { reqRankList, reqdeleteRank, reqAddRank } from '@/service/modules/rank'

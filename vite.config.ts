@@ -24,5 +24,8 @@ export default defineConfig({
         javascriptEnabled: true
       }
     }
+  },
+  build: {
+    target: 'esnext' // 或其他支持顶层 await 的环境
   }
 })

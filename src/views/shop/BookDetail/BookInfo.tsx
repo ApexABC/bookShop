@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import { memo } from 'react'
 import type { FC, ReactNode } from 'react'
 import { Rate, message, Badge } from 'antd'
 import {

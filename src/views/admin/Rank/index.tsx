@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import { memo } from 'react'
 import type { FC, ReactNode } from 'react'
 import RankHeader from './c-cpns/RankHeader'
 import DragTable from './c-cpns/DragTable'

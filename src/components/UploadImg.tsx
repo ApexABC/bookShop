@@ -1,4 +1,4 @@
-import React, { memo, useState, forwardRef, useImperativeHandle, Ref } from 'react'
+import React, { useState, forwardRef, useImperativeHandle, Ref } from 'react'
 import { Upload } from 'antd'
 import type { RcFile } from 'antd/es/upload/interface'
 interface IChildMethods {

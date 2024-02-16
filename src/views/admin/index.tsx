@@ -1,4 +1,4 @@
-import React, { memo, Suspense } from 'react'
+import { memo, Suspense } from 'react'
 import type { FC, ReactNode } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 import AsideMenu from './c-cpns/AsideMenu'

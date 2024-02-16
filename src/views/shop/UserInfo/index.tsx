@@ -5,7 +5,7 @@ import {
   reqFollowUser
 } from '@/service/modules/user'
 
-import React, { memo, useEffect, useState, useContext } from 'react'
+import { memo, useEffect, useState, useContext } from 'react'
 import type { FC, ReactNode } from 'react'
 import { Avatar, message } from 'antd'
 import { useLocation, useNavigate } from 'react-router-dom'

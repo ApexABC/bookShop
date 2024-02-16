@@ -1,5 +1,5 @@
-import React, { memo, useState, useImperativeHandle, forwardRef, Ref, useEffect } from 'react'
-import type { FC, ReactNode } from 'react'
+import React, { useState, useImperativeHandle, forwardRef, Ref, useEffect } from 'react'
+import type { ReactNode } from 'react'
 import { Modal, Transfer, message } from 'antd'
 import {
   reqSortList,
