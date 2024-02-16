@@ -46,7 +46,9 @@ const BookItem: FC<IProps> = ({ itemData }) => {
         </div>
         <span className="text-lg font-semibold text-[#ffca42]">￥{itemData.price}</span>
       </div>
-      <div className="line-clamp-2 px-2 text-[#969aa0] text-base">{itemData.describe}</div>
+      <div className="line-clamp-2 w-[90vw] sm:w-full px-3 text-[#969aa0] text-base">
+        {itemData.describe}
+      </div>
       <div className="flex items-center justify-between h-8 px-3">
         <div className="flex items-center">
           <Rate value={itemData.rate / 2} disabled allowHalf></Rate>
