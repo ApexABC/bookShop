@@ -62,7 +62,7 @@ const RankList: FC<IProps> = (props) => {
                 <h2 className="text-xl font-bold">{item.name}</h2>
                 <span className="my-3">{item.author}</span>
                 {/* w-40 min-[450px]:w-full */}
-                <div className="flex  w-[50vw] sm:w-full">
+                <div className="flex  w-[45vw] sm:w-full">
                   <span className="line-clamp-2 font-normal text-[#86909c]">{item.describe}</span>
                 </div>
                 <div className="mt-2 text-base text-[#1a66b3]">

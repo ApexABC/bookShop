@@ -32,12 +32,12 @@ const items: MenuProps['items'] = [
   getItem('订单管理', '/order', <Svg name="订单" />),
   getItem('书籍管理', '/book', <Svg name="书吧" />),
   getItem('榜单管理', '/rank', <Svg name="榜单" />),
-  getItem('分类管理', '/sort', <Svg name="分类" />),
+  getItem('分类管理', '/sort', <Svg name="分类" />)
   //   { type: 'divider' },
-  getItem('排行榜', 'sub6', <AppstoreOutlined />, [
-    getItem('热门榜', '/hot'),
-    getItem('新书榜', '14')
-  ])
+  // getItem('排行榜', 'sub6', <AppstoreOutlined />, [
+  //   getItem('热门榜', '/hot'),
+  //   getItem('新书榜', '14')
+  // ])
 ]
 
 const AsideMenu: FC<IProps> = (props) => {
