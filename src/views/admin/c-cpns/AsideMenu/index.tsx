@@ -1,6 +1,5 @@
 import React, { memo } from 'react'
 import type { FC, ReactNode } from 'react'
-import { AppstoreOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import Svg from '@/components/Svg'
 import type { MenuProps } from 'antd'

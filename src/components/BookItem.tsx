@@ -24,8 +24,8 @@ const BookItem: FC<IProps> = ({ itemData }) => {
     shallowEqualApp
   )
   async function handleCartBtn(e: React.MouseEvent<HTMLDivElement, MouseEvent>, item: any) {
-    if (!(await verifyTokenPass())) navigate('/login')
     e.stopPropagation()
+    if (!(await verifyTokenPass())) navigate('/login')
     await reqAddCart(item.id)
     const { cartList } = await reqCartList()
     const { count } = await reqCartTotalCount()
